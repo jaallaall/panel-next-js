@@ -12,7 +12,7 @@ export const register = async (body: Options) => {
 };
 
 export const loginUser = async (body: Options) => {
-  const { data } = await instance().post("auth/login/username/user", {
+  const { data } = await instance().post("auth/login/username/user/", {
     username: body.username,
     password: body.password,
   });
@@ -20,7 +20,7 @@ export const loginUser = async (body: Options) => {
 };
 
 export const loginAdmin = async (body: Options) => {
-  const { data } = await instance().post("auth/login/username/admin", {
+  const { data } = await instance().post("auth/login/username/admin/", {
     username: body.username,
     password: body.password,
   });
@@ -28,6 +28,6 @@ export const loginAdmin = async (body: Options) => {
 };
 
 export const logout = async () => {
-  const { data } = await instance().post("auth/logout/user");
+  const { data } = await instance().post("auth/logout/user/");
   return data;
 };

@@ -1,7 +1,9 @@
+import CircularProgress from "@mui/material/CircularProgress";
 import Button, { ButtonProps } from "@mui/material/Button";
 
-export const ButtonCustom: React.FC<ButtonProps> = ({
+export const ButtonCustom: React.FC<{ loading?: boolean } & ButtonProps> = ({
   children,
+  loading,
   ...rest
 }): React.ReactElement => {
   return (
@@ -11,6 +13,7 @@ export const ButtonCustom: React.FC<ButtonProps> = ({
       color="primary"
       sx={{ boxShadow: "none !important", py: 1.5 }}
     >
+      {loading && <CircularProgress size={22} sx={{ color: "#fff", mr: 3 }} />}
       {children}
     </Button>
   );

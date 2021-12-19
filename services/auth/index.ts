@@ -11,5 +11,4 @@ export const useLoginUser = (): UseMutationResult<Options, Error, Options> =>
 export const useAdminUser = (): UseMutationResult<Options, Error, Options> =>
   useMutation<Options, Error, Options>(loginAdmin);
 
-export const useLogout = (): UseMutationResult<Options, Error, Options> =>
-  useMutation<Options, Error, Options>(logout);
+export const useLogout = (): UseMutationResult<Error> => useMutation(logout);

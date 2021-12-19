@@ -13,11 +13,11 @@ const Layout: React.FC<{
   handleClickDelete?: React.MouseEventHandler<HTMLButtonElement>;
 }> = ({ handleClickDelete, children }): React.ReactElement => {
   const [cookie] = useCookies(["token"]);
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
   const [sidebar, setSidebar] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
   const [hover, setHover] = useState<boolean>(false);
-
+  // توی مرورگر خطا میده توی پست من درسته ولی
   const toggleDrawer = () => {
     setSidebar(!sidebar);
     setHover(!hover);
@@ -27,7 +27,10 @@ const Layout: React.FC<{
     if (!Boolean(cookie.token)) push("/login");
   }, []);
 
-  if (!Boolean(cookie.token)) {
+  if (
+    !cookie.token &&
+    pathname.split("/").some((it) => it === "login" || it === "register")
+  ) {
     return (
       <Helmet>
         <Section

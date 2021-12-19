@@ -21,4 +21,5 @@ export * from "./Section";
 // export { SelectCustom as Select } from "./Select";
 // export { TablePaginationCustom as TablePagination } from "./TablePagination";
 export { TextFieldCustom as TextField } from "./TextField";
+export { CircularProgressCustom as CircularProgress } from "./CircularProgress";
 // export { SwiperCarousel as Swiper } from "./Swiper";

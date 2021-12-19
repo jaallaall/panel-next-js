@@ -1,27 +1,30 @@
+import { Button, TextField } from "@mui";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { Alert, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { TextField, Button } from "@mui";
 import { useFormik } from "formik";
+import { useAuth } from "hooks";
 import { mainUs } from "i18n";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { useCookies } from "react-cookie";
 import { useRegister } from "services/auth";
 import { validationSchema } from "utils/validationSchema";
-import { useRouter } from "next/router";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { Typography } from "@mui/material";
-import { useAuth } from "hooks";
-import { useCookies } from "react-cookie";
 
 const Register: React.FC = (): React.ReactElement => {
   const { push } = useRouter();
   const { state, dispatch } = useAuth();
   const [cookie, setCookie] = useCookies(["token"]);
-  const { mutate } = useRegister();
+  const { mutate, isLoading } = useRegister();
+
+  const [message, setMessage] = useState<string>("");
 
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
       email: "",
-      phoneNumber: 0,
+      phoneNumber: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -36,12 +39,14 @@ const Register: React.FC = (): React.ReactElement => {
             maxAge: 3600, // Expires after 1hr
             sameSite: true,
           });
+          push("/");
+        },
+        onError: (data: any) => {
+          setMessage(data.response.data.message);
         },
       });
     },
   });
-
-  console.log(state);
 
   return (
     <Stack
@@ -55,7 +60,9 @@ const Register: React.FC = (): React.ReactElement => {
         p: 2,
       }}
     >
+      {message && <Alert severity="error">{message}</Alert>}
       <Typography variant="h5">register</Typography>
+
       <TextField name="username" formik={formik} label={mainUs.username} />
       <TextField
         name="password"
@@ -75,7 +82,8 @@ const Register: React.FC = (): React.ReactElement => {
         formik={formik}
         label={mainUs.phoneNumber}
       />
-      <Button type="submit">
+
+      <Button type="submit" loading={isLoading}>
         <ExitToAppIcon sx={{ mr: 1 }} />
         register
       </Button>

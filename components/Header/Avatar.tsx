@@ -5,27 +5,23 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
+import { useLogout } from "services";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const AvatarList: React.FC = (): React.ReactElement => {
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  const { push } = useRouter();
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  const { push } = useRouter();
+  const { mutate } = useLogout();
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -33,8 +29,8 @@ const AvatarList: React.FC = (): React.ReactElement => {
   };
 
   const handleClickLogout = () => {
-    Cookies.remove("token");
-    // setUser(null);
+    removeCookie("token");
+    mutate(null);
     push("/login");
   };
   const user = "jalal";
@@ -70,7 +66,10 @@ const AvatarList: React.FC = (): React.ReactElement => {
         onClose={handleCloseUserMenu}
       >
         {settings.map((setting) => (
-          <MenuItem key={setting} onClick={handleCloseNavMenu}>
+          <MenuItem
+            key={setting}
+            onClick={setting === "Logout" ? handleClickLogout : undefined}
+          >
             <Typography textAlign="center">{setting}</Typography>
           </MenuItem>
         ))}

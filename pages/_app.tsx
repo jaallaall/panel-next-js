@@ -44,8 +44,6 @@ export default function MyApp(props: MyAppProps) {
     };
   }, [router]);
 
-  console.log(router.pathname.split("/").includes("login" && "register"));
-
   return (
     <ColorModeProvider>
       <Head>
@@ -56,9 +54,7 @@ export default function MyApp(props: MyAppProps) {
         <CookiesProvider>
           <QueryClientProvider client={queryClientRef.current}>
             <CssBaseline />
-            {pageProps.statusCode !== 404 &&
-            pageProps.statusCode !== 500 &&
-            !router.pathname.split("/").includes("login" && "register") ? (
+            {pageProps.statusCode !== 404 && pageProps.statusCode !== 500 ? (
               <Layout>
                 <Component {...pageProps} />
               </Layout>
