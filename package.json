@@ -8,15 +8,34 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/cache": "^11.6.0",
+    "@emotion/react": "^11.7.0",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.2.0",
+    "@mui/material": "^5.2.2",
+    "@types/nprogress": "^0.2.0",
+    "axios": "^0.24.0",
+    "formik": "^2.2.9",
+    "js-cookie": "^3.0.1",
     "next": "12.0.4",
+    "nprogress": "^0.2.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-cookie": "^4.1.1",
+    "react-dom": "17.0.2",
+    "react-query": "^3.34.0",
+    "stylis": "^4.0.10",
+    "stylis-plugin-rtl": "^2.1.1",
+    "swiper": "^7.3.2",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.1",
     "@types/node": "16.11.11",
     "@types/react": "17.0.37",
     "eslint": "7",
     "eslint-config-next": "12.0.4",
+    "react-svg": "^14.1.4",
     "typescript": "4.5.2"
   }
 }

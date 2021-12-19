@@ -1,0 +1,8 @@
+{
+  "type": "type",
+  "email": "email",
+  "phoneNumber": "phone number",
+  "city": "city",
+  "username": "user name",
+  "password": "password"
+}

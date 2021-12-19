@@ -1,0 +1,12 @@
+{
+  "doshboard": "doshboard",
+  "test": "test",
+  "register": "register",
+  "login": "login",
+  "settings": "settings",
+  "userProfile": "user profile",
+  "services": "services",
+  "MobileManagement": "mobile management",
+  "EmailManagement": "email management",
+  "changePassword": "change password"
+}
