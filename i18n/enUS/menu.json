@@ -8,5 +8,6 @@
   "services": "services",
   "MobileManagement": "mobile management",
   "EmailManagement": "email management",
-  "changePassword": "change password"
+  "changePassword": "change password",
+  "MessageMarketing": "message marketing"
 }

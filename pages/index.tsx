@@ -1,9 +1,11 @@
 import { nextDynamic } from "components";
-import type { NextPage } from "next";
+import { getLayout } from "layouts";
 
-const HomePage: NextPage = () => {
+const HomePage = () => {
   const Home = nextDynamic("Home");
   return <Home />;
 };
+
+HomePage.getLayout = getLayout;
 
 export default HomePage;

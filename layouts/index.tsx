@@ -1,23 +1,22 @@
-import { Breadcrumbs, Section } from "@mui";
+import { Breadcrumbs } from "@mui";
 import Stack from "@mui/material/Stack";
 import Dashboard from "components/Dashboard";
 import { Header } from "components/Header";
 import { menuUs } from "i18n";
+import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Helmet from "./Helmet";
 import Settings from "./Settings";
 
-const Layout: React.FC<{
-  handleClickDelete?: React.MouseEventHandler<HTMLButtonElement>;
-}> = ({ handleClickDelete, children }): React.ReactElement => {
+const Layout: React.FC = ({ children }): React.ReactElement => {
   const [cookie] = useCookies(["token"]);
   const { push, pathname } = useRouter();
   const [sidebar, setSidebar] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
   const [hover, setHover] = useState<boolean>(false);
-  // توی مرورگر خطا میده توی پست من درسته ولی
+
   const toggleDrawer = () => {
     setSidebar(!sidebar);
     setHover(!hover);
@@ -26,30 +25,6 @@ const Layout: React.FC<{
   useEffect(() => {
     if (!Boolean(cookie.token)) push("/login");
   }, []);
-
-  if (
-    !cookie.token &&
-    pathname.split("/").some((it) => it === "login" || it === "register")
-  ) {
-    return (
-      <Helmet>
-        <Section
-          sx={{
-            py: 10,
-            flex: "auto",
-            justifyContent: "center",
-            backgroundImage: "url(/images/auth-bg.png)",
-            backgroundPosition: "center center",
-            backgroundSize: "cover",
-            backgroundRepeat: "repeat",
-            backgroundColor: "rgba(0,0,0,0.04)",
-          }}
-        >
-          {children}
-        </Section>
-      </Helmet>
-    );
-  }
 
   return (
     <Helmet>
@@ -81,4 +56,6 @@ const Layout: React.FC<{
   );
 };
 
-export default Layout;
+export function getLayout(page: NextPage) {
+  return <Layout>{page}</Layout>;
+}

@@ -4,5 +4,8 @@
   "phoneNumber": "phone number",
   "city": "city",
   "username": "user name",
-  "password": "password"
+  "password": "password",
+  "message": "message",
+  "gender": "gender",
+  "number": "number"
 }

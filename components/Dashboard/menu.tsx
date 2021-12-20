@@ -8,9 +8,9 @@ import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
 
 export const menu = [
   {
-    name: menuUs.settings,
+    name: menuUs.MessageMarketing,
     icon: <DisplaySettingsIcon sx={{ mr: 1 }} />,
-    href: "settings",
+    href: "message-marketing",
     subMenu: [],
   },
   {

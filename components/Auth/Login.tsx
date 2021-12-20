@@ -1,6 +1,7 @@
 import { Button, Link, TextField } from "@mui";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { Alert, Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import { mainUs } from "i18n";

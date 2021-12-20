@@ -25,3 +25,10 @@ export const validationSchema = yup.object({
     .matches(phoneRegExp, "Invalid phone number")
     .required("This field is required"),
 });
+
+export const validationSchemaUser = yup.object({
+  message: yup.string().required("This field is required"),
+  gender: yup.string().required("This field is required"),
+  city: yup.string().required("This field is required"),
+  number: yup.number().required("This field is required"),
+});

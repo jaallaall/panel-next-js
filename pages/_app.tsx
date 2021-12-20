@@ -1,7 +1,7 @@
 import { EmotionCache } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AuthProvider, ColorModeProvider } from "context";
-import Layout from "layouts";
+import { NextPage } from "next";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -16,8 +16,17 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
-export default function MyApp(props: MyAppProps) {
+type Page<P = {}> = NextPage<P> & {
+  getLayout?: (page: React.ReactNode) => React.ReactNode;
+};
+
+type Props = MyAppProps & {
+  Component: Page;
+};
+
+export default function MyApp(props: Props) {
   const { Component, pageProps } = props;
+  const getLayout = Component.getLayout || ((page: React.ReactNode) => page);
   const router = useRouter();
   const queryClientRef: React.MutableRefObject<any> = useRef();
 
@@ -54,13 +63,7 @@ export default function MyApp(props: MyAppProps) {
         <CookiesProvider>
           <QueryClientProvider client={queryClientRef.current}>
             <CssBaseline />
-            {pageProps.statusCode !== 404 && pageProps.statusCode !== 500 ? (
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            ) : (
-              <Component {...pageProps} />
-            )}
+            {getLayout(<Component {...pageProps} />)}
             <ReactQueryDevtools />
           </QueryClientProvider>
         </CookiesProvider>

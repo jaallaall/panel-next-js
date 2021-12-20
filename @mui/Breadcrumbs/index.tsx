@@ -30,7 +30,7 @@ export const BreadcrumbsCustom: React.FC<
     >
       {breadcrumb?.map((item, i) => {
         if (i === breadcrumb.length - 1) {
-          return <Typography key={i}>{item}</Typography>;
+          return <Typography key={i}>{item.split("-").join(" ")}</Typography>;
         }
         return (
           <Link
@@ -38,7 +38,7 @@ export const BreadcrumbsCustom: React.FC<
             href={item === home ? "/" : `/${item}`}
             key={i}
           >
-            {item}
+            {item.split("-").join(" ")}
           </Link>
         );
       })}

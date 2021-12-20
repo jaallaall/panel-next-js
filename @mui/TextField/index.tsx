@@ -13,7 +13,7 @@ export const TextFieldCustom: React.FC<
     formik?: FormikProps<any>;
     type?: React.HTMLInputTypeAttribute;
   } & TextFieldProps
-> = ({ name, label, formik, type, ...rest }): React.ReactElement => {
+> = ({ name, label, formik, type = "text", ...rest }): React.ReactElement => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
