@@ -32,10 +32,11 @@ const MessageMarketing: React.FC = (): React.ReactElement => {
       number: 1,
     },
     validationSchema: validationSchemaUser,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, { resetForm }) => {
       mutate(values, {
-        onSuccess: (data) => {},
+        onSuccess: (data) => {
+          resetForm();
+        },
         onError: (data: any) => {},
       });
     },

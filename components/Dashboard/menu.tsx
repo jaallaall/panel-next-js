@@ -11,7 +11,10 @@ export const menu = [
     name: menuUs.MessageMarketing,
     icon: <DisplaySettingsIcon sx={{ mr: 1 }} />,
     href: "message-marketing",
-    subMenu: [],
+    subMenu: [
+      { name: "user create", href: "user-create" },
+      { name: "user all", href: "user-all" },
+    ],
   },
   {
     name: menuUs.userProfile,

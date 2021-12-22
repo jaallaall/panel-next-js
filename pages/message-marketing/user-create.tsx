@@ -1,11 +1,11 @@
 import { nextDynamic } from "components";
 import { getLayout } from "layouts";
 
-const MessageMarketingPage = () => {
+const UserCreatePage = () => {
   const MessageMarketing = nextDynamic("MessageMarketing");
   return <MessageMarketing />;
 };
 
-MessageMarketingPage.getLayout = getLayout;
+UserCreatePage.getLayout = getLayout;
 
-export default MessageMarketingPage;
+export default UserCreatePage;

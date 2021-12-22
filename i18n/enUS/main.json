@@ -7,5 +7,8 @@
   "password": "password",
   "message": "message",
   "gender": "gender",
-  "number": "number"
+  "number": "number",
+  "description": "description",
+  "message_count": "message count",
+  "admin_accept": "admin accept"
 }

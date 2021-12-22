@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 function getCookie(name: any) {
   var nameEQ = name + "=";
-  var ca = document.cookie.split(";");
+  var ca = document?.cookie.split(";");
   for (var i = 0; i < ca.length; i++) {
     var c = ca[i];
     while (c.charAt(0) == " ") c = c.substring(1, c.length);
@@ -22,7 +22,9 @@ export const instance = (contentType?: string): AxiosInstance => {
 
   axiosInstance.interceptors.request.use((config): AxiosRequestConfig => {
     if (config.headers) {
-      config.headers.Authorization = `Bearer ${getCookie("token")}`;
+      config.headers.Authorization = `Bearer ${JSON.parse(
+        decodeURI(getCookie("token") as string)
+      )}`;
     }
 
     return config;

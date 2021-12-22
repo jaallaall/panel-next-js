@@ -1,10 +1,9 @@
-import { Link } from "@mui";
 import { ExpandMore } from "@mui/icons-material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Collapse, ListItemButton } from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
-import { LinkProps as NextLinkProps } from "next/link";
 import { useState } from "react";
+import { Link } from "@mui";
 
 const ListItems: React.FC<{
   subMenu?: { [key: string]: any }[];
@@ -12,7 +11,7 @@ const ListItems: React.FC<{
   openDrawer?: boolean;
   subName?: string;
   icon?: React.ReactElement;
-  href?: NextLinkProps["href"];
+  href: string;
 }> = ({
   name,
   subMenu,
@@ -32,7 +31,7 @@ const ListItems: React.FC<{
       <ListItemButton
         onClick={list?.length > 0 && openDrawer ? handleClick : undefined}
         sx={list?.length > 0 && openDrawer ? null : { py: 1.5 }}
-        component={href ? Link : ListItemButton}
+        component={!subMenu?.length ? Link : ListItemButton}
         href={`/${href}`}
       >
         {icon}
@@ -54,7 +53,7 @@ const ListItems: React.FC<{
           {list?.map((item, i) => {
             return (
               <Link
-                href={item.href}
+                href={`/${href}/${item.href}`}
                 key={i}
                 sx={{ px: 2, py: 1, color: "inherit", display: "block" }}
               >

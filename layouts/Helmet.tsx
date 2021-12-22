@@ -8,10 +8,21 @@ const Helmet: React.FC<{ title?: string }> = ({
 }): React.ReactElement => {
   const { pathname } = useRouter();
 
+  function capitalizeFirstLetter(string: string) {
+    const words = string.split(" ");
+    return words
+      .map((word) => {
+        return word[0].toUpperCase() + word.substring(1);
+      })
+      .join("");
+  }
+
   const tit =
     pathname === "/"
       ? menuUs.doshboard
-      : (menuUs as any)[pathname?.split("/")[1]];
+      : (menuUs as any)[
+          capitalizeFirstLetter(pathname?.split("/")[1].split("-").join(" "))
+        ];
 
   const res = tit ? "panel" + " | " + tit : "panel";
   return (

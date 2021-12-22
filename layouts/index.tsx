@@ -48,7 +48,7 @@ const Layout: React.FC = ({ children }): React.ReactElement => {
           mt: 8,
         }}
       >
-        <Breadcrumbs home={menuUs.doshboard} sx={{ color: "primary.100" }} />
+        <Breadcrumbs home={menuUs.Doshboard} sx={{ color: "primary.100" }} />
 
         {children}
       </Stack>

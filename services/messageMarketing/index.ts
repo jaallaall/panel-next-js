@@ -5,12 +5,12 @@ import {
   useQuery,
   UseQueryResult,
 } from "react-query";
-import { messageSms, userCreate } from "./api";
+import { userAll, userCreate } from "./api";
 
-export const useMessageSms = (): UseQueryResult<any, unknown> => {
+export const useUserAll = (): UseQueryResult<any, unknown> => {
   return useQuery<any, unknown, any, (string | number)[]>(
-    ["messageSms"],
-    () => messageSms(),
+    ["userAll"],
+    () => userAll(),
     {
       refetchOnWindowFocus: false,
       keepPreviousData: true,
