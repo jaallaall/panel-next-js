@@ -12,13 +12,13 @@ const styles: SxPropes = {
 
 const ActionsGrid: React.FC<{
   setDataRow: (e: any) => void;
-  toggle: () => void;
+  // toggle: () => void;
   original: Options;
   toggleDelete?: (e?: any) => void;
   handleClickEddit?: (e?: any) => void;
 }> = ({
   setDataRow,
-  toggle,
+  // toggle,
   original,
   toggleDelete,
   handleClickEddit,

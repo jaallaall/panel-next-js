@@ -1,14 +1,10 @@
-import { Options } from "interfaces";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation } from "react-query";
 import { loginAdmin, loginUser, logout, register } from "./api";
 
-export const useRegister = (): UseMutationResult<Options, Error, Options> =>
-  useMutation<Options, Error, Options>(register);
+export const useRegister = () => useMutation(register);
 
-export const useLoginUser = (): UseMutationResult<Options, Error, Options> =>
-  useMutation<Options, Error, Options>(loginUser);
+export const useLoginUser = () => useMutation(loginUser);
 
-export const useAdminUser = (): UseMutationResult<Options, Error, Options> =>
-  useMutation<Options, Error, Options>(loginAdmin);
+export const useAdminUser = () => useMutation(loginAdmin);
 
-export const useLogout = (): UseMutationResult<Error> => useMutation(logout);
+export const useLogout = () => useMutation(logout);

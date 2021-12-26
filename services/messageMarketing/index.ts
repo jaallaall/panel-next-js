@@ -1,22 +1,14 @@
-import { Options } from "interfaces";
-import {
-  useMutation,
-  UseMutationResult,
-  useQuery,
-  UseQueryResult,
-} from "react-query";
-import { userAll, userCreate } from "./api";
+import { useMutation, useQuery } from "react-query";
+import { userAll, userCreate, userDelete, userUpdate } from "./api";
 
-export const useUserAll = (): UseQueryResult<any, unknown> => {
-  return useQuery<any, unknown, any, (string | number)[]>(
-    ["userAll"],
-    () => userAll(),
-    {
-      refetchOnWindowFocus: false,
-      keepPreviousData: true,
-    }
-  );
+export const useUserAll = () => {
+  return useQuery(["userAll"], () => userAll(), {
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+  });
 };
 
-export const useUserCreate = (): UseMutationResult<Options, Error, Options> =>
-  useMutation<Options, Error, Options>(userCreate);
+export const useUserCreate = () => useMutation(userCreate);
+
+export const useUserUpdate = () => useMutation(userUpdate);
+export const useUserDelete = () => useMutation(userDelete);

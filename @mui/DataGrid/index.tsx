@@ -1,4 +1,6 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,10 +8,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 // import Button from '@mui/material/Button'
-import TablePagination from "@mui/material/TablePagination";
+import Pagination from "./Pagination";
 import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
 import { matchSorter } from "match-sorter";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   useFilters,
   useGlobalFilter,
@@ -18,10 +21,12 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
-import { EditableCell } from "./Cell/EditableCell";
+// import { EditableCell } from "./Cell/EditableCell";
 import { DefaultColumnFilter } from "./DefaultColumnFilter";
 import { GlobalFilter } from "./GlobalFilter";
 import { IndeterminateCheckbox } from "./IndeterminateCheckbox";
+import { Divider, MenuItem, TextField } from "@mui/material";
+import { EnhancedTableToolbar } from "./EnhancedTableToolbar";
 
 function fuzzyTextFilterFn(rows: any, id: any, filterValue: any): any {
   return matchSorter(rows, filterValue, {
@@ -35,10 +40,13 @@ fuzzyTextFilterFn.autoRemove = (val: any) => !val;
 export function DataGrid({
   columns,
   data,
-  pageCount: controlledPageCount,
   updateMyData,
   onSelectedRows,
+  skipPageReset,
+  handleDeleteAll,
 }: any) {
+  const [selected, setSelected] = useState([]);
+
   const filterTypes = useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -62,37 +70,42 @@ export function DataGrid({
   const defaultColumn = useMemo(
     () => ({
       Filter: DefaultColumnFilter,
-      Cell: EditableCell,
+      // Cell: EditableCell,
     }),
     []
   );
 
   const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    state,
     visibleColumns,
     preGlobalFilteredRows,
     setGlobalFilter,
-    gotoPage,
-    setPageSize,
     selectedFlatRows,
-    state: { pageIndex, pageSize, selectedRowIds },
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    gotoPage,
+    nextPage,
+    previousPage,
+    canPreviousPage,
+    canNextPage,
+    setPageSize,
     pageCount,
     pageOptions,
+    state,
+    state: { pageIndex, pageSize, selectedRowIds },
   } = useTable(
     {
       columns,
       data,
+      initialState: { pageIndex: 0, pageSize: 2 },
       defaultColumn, // Be sure to pass the defaultColumn option
       filterTypes,
-      initialState: { pageIndex: 0, pageSize: 10 },
-      manualPagination: true,
-      pageCount: controlledPageCount,
+      // manualPagination: true,
+      // pageCount: controlledPageCount,
       updateMyData,
+      autoResetPage: !skipPageReset,
     },
     useFilters, // useFilters!
     useGlobalFilter, // useGlobalFilter!
@@ -128,93 +141,113 @@ export function DataGrid({
     onSelectedRows(selectedFlatRows);
   }, [selectedFlatRows]);
 
-  const firstPageRows = rows.slice(0, 10);
+  // const firstPageRows = page.slice(0, 5);
+  console.log(selectedRowIds);
+
+  // const handleSelectAllClick = (event) => {
+  //   if (event.target.checked) {
+  //     const newSelecteds = rows.map((n) => n.name);
+  //     setSelected(newSelecteds);
+  //     return;
+  //   }
+  //   setSelected([]);
+  // };
 
   return (
-    <TableContainer component={Paper}>
-      <Table
-        sx={{ minWidth: 750 }}
-        aria-label="simple table"
-        {...getTableProps()}
-      >
-        <TableHead>
-          {headerGroups.map((headerGroup, inx) => (
-            <TableRow {...headerGroup.getHeaderGroupProps()} key={inx}>
-              {headerGroup.headers.map((column, i) => {
-                return (
-                  <TableCell
-                    align="center"
-                    {...column.getHeaderProps()}
-                    key={i}
-                    sx={{ verticalAlign: "baseline", p: 1 }}
-                  >
-                    <Box whiteSpace="nowrap" display="flex">
-                      {column.render("Header")}
-                    </Box>
-                    {column.canFilter && (
-                      <Box sx={{ mt: 1 }}>
-                        {column.canFilter ? column.render("Filter") : null}
-                      </Box>
-                    )}
-
-                    <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
-                        : ""}
-                    </span>
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          ))}
-          <TableRow>
-            <TableCell colSpan={visibleColumns.length}>
-              <GlobalFilter
-                preGlobalFilteredRows={preGlobalFilteredRows}
-                globalFilter={state.globalFilter}
-                setGlobalFilter={setGlobalFilter}
-              />
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody {...getTableBodyProps()}>
-          {firstPageRows.map((row, inx) => {
-            prepareRow(row);
-            return (
-              <TableRow
-                {...row.getRowProps()}
-                key={inx}
-                sx={{
-                  "&:last-child td, &:last-child th": {
-                    border: 0,
-                  },
-                }}
-              >
-                {row.cells.map((cell, i) => {
+    <Paper sx={{ width: "100%", mb: 2 }}>
+      <TableContainer sx={{ position: "relative", minHeight: 400 }}>
+        <EnhancedTableToolbar
+          numSelected={Object.keys(selectedRowIds).length}
+        />
+        <Table
+          sx={{ minWidth: 750, height: "100%" }}
+          stickyHeader
+          aria-label="sticky table"
+          {...getTableProps()}
+        >
+          <TableHead>
+            {headerGroups.map((headerGroup, inx) => (
+              <TableRow {...headerGroup.getHeaderGroupProps()} key={inx}>
+                {headerGroup.headers.map((column, i) => {
                   return (
-                    <TableCell {...cell.getCellProps()} key={i} sx={{ p: 1 }}>
-                      {cell.render("Cell")}
+                    <TableCell
+                      align="center"
+                      {...column.getHeaderProps()}
+                      key={i}
+                      sx={{ verticalAlign: "baseline", p: 1 }}
+                    >
+                      <Box whiteSpace="nowrap" display="flex">
+                        {column.render("Header")}
+                      </Box>
+                      {column.canFilter && (
+                        <Box sx={{ mt: 1 }}>
+                          {column.canFilter ? column.render("Filter") : null}
+                        </Box>
+                      )}
+
+                      <span>
+                        {column.isSorted
+                          ? column.isSortedDesc
+                            ? " 🔽"
+                            : " 🔼"
+                          : ""}
+                      </span>
                     </TableCell>
                   );
                 })}
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-      <TablePagination
-        component="div"
-        count={pageSize}
-        page={pageIndex}
-        onPageChange={(_: unknown, newPage: number) => gotoPage(newPage)}
-        rowsPerPage={pageIndex}
-        onRowsPerPageChange={(
-          event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => setPageSize(parseInt(event.target.value, 10))}
+            ))}
+            <TableRow>
+              <TableCell colSpan={visibleColumns.length}>
+                <GlobalFilter
+                  preGlobalFilteredRows={preGlobalFilteredRows}
+                  globalFilter={state.globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody {...getTableBodyProps()}>
+            {page.map((row, inx) => {
+              prepareRow(row);
+              return (
+                <TableRow
+                  {...row.getRowProps()}
+                  key={inx}
+                  sx={{
+                    "&:last-child td, &:last-child th": {
+                      border: 0,
+                    },
+                  }}
+                >
+                  {row.cells.map((cell, i) => {
+                    return (
+                      <TableCell {...cell.getCellProps()} key={i} sx={{ p: 1 }}>
+                        {cell.render("Cell")}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Divider />
+      <Pagination
+        gotoPage={gotoPage}
+        previousPage={previousPage}
+        nextPage={nextPage}
+        canPreviousPage={canPreviousPage}
+        canNextPage={canNextPage}
+        pageIndex={pageIndex}
+        pageOptions={pageOptions}
+        setPageSize={setPageSize}
+        pageSize={pageSize}
+        options={[2, 4, 15, 20]}
+        pageCount={pageCount}
       />
-    </TableContainer>
+    </Paper>
   );
 }
 

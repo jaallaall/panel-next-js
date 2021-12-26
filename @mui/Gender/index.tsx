@@ -24,6 +24,7 @@ export const Gender: React.FC<{ name: string; formik?: FormikProps<any> }> = ({
           defaultValue="male"
           name={name}
           onChange={formik?.handleChange}
+          value={formik?.values[name]}
         >
           <FormControlLabel value="male" control={<Radio />} label="Male" />
           <FormControlLabel value="female" control={<Radio />} label="Female" />

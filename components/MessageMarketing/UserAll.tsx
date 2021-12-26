@@ -1,18 +1,54 @@
-import { useUserAll } from "services";
-import { DataGrid } from "@mui";
-import { useMemo, useState } from "react";
-import ActionsGrid from "./ActionGrid";
+import { Box, Dialog, AskDialog, DataGrid } from "@mui";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { useModal } from "hooks";
 import { mainUs } from "i18n";
 import { Options } from "interfaces";
-import { useModal } from "hooks";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useQueryClient } from "react-query";
+import { useUserAll, useUserDelete } from "services";
+import ActionsGrid from "./ActionGrid";
+import UserCreate from "./UserCreate";
+
+export type Person = {
+  message: string;
+  message_count: string;
+  admin_accept: boolean;
+  gender: string;
+  city: string;
+  number: number;
+  total_cost: string;
+};
+
+type PersonData = Person & {
+  subRows?: PersonData[] | undefined;
+};
 
 const UserAll: React.FC = (): React.ReactElement => {
+  const queryClient = useQueryClient();
+  const { data: dataUserAll } = useUserAll();
+  const { mutate } = useUserDelete();
+
   const [onSelectedRows, setOnSelectedRows] = useState<Options[]>([]);
   const [skipPageReset, setSkipPageReset] = useState(false);
 
-  const { data: dataUserAll } = useUserAll();
   const { isShowing, toggle } = useModal();
+  const { isShowing: isShowingDelete, toggle: toggleDelete } = useModal();
   const [dataRow, setDataRow] = useState<{ [key: string]: any }>({});
+
+  useEffect(() => {
+    setSkipPageReset(false);
+  }, [dataUserAll]);
+
+  const rowDelete = () => {
+    // toggleDelete();
+    mutate(dataRow.id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries("userAll");
+        toggleDelete();
+      },
+    });
+  };
 
   const columns = useMemo(
     () => [
@@ -32,10 +68,36 @@ const UserAll: React.FC = (): React.ReactElement => {
         Filter: "",
         Cell: ({ row: { original } }: { row: { original: Options } }) => {
           if (original.admin_accept) {
-            return "active";
+            return <CheckBoxIcon />;
           }
-          return "deactive";
+          return <CancelIcon color="error" />;
         },
+      },
+      {
+        Header: mainUs.gender,
+        accessor: "gender",
+        Filter: "",
+        Cell: ({ row: { original } }: { row: { original: Options } }) => {
+          return <Box>{original.query_param.gender}</Box>;
+        },
+      },
+      {
+        Header: mainUs.city,
+        accessor: "city",
+        Filter: "",
+        Cell: ({ row: { original } }: { row: { original: Options } }) => {
+          return <Box>{original.query_param.city}</Box>;
+        },
+      },
+      {
+        Header: mainUs.number,
+        accessor: "number",
+        Filter: "",
+      },
+      {
+        Header: mainUs.total_cost,
+        accessor: "total_cost",
+        Filter: "",
       },
       {
         id: "details",
@@ -43,15 +105,15 @@ const UserAll: React.FC = (): React.ReactElement => {
           <ActionsGrid
             setDataRow={setDataRow}
             original={original}
-            toggle={toggle}
-            // toggleDelete={() => {
-            //   toggleDelete();
-            //   setDataRow(original);
-            // }}
-            // handleClickEddit={() => {
-            //   toggleEddit();
-            //   setDataRow(original);
-            // }}
+            // toggle={toggle}
+            toggleDelete={() => {
+              toggleDelete();
+              setDataRow(original);
+            }}
+            handleClickEddit={() => {
+              toggle();
+              setDataRow(original);
+            }}
           />
         ),
       },
@@ -59,22 +121,41 @@ const UserAll: React.FC = (): React.ReactElement => {
     []
   );
 
+  const updateMyData = (rowIndex: any, columnId: any, value: any) => {
+    // We also turn on the flag to not reset the page
+    setSkipPageReset(true);
+  };
+
   const data = useMemo(() => {
     return dataUserAll ? dataUserAll : [];
   }, [dataUserAll]);
 
-  const updateMyData = (rowIndex: number, columnId: string, value: unknown) => {
-    setSkipPageReset(true);
+  const handleDeleteAll = () => {
+    onSelectedRows?.map((item) =>
+      mutate(item.original.id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries("userAll");
+        },
+      })
+    );
   };
 
-  console.log(dataUserAll);
   return (
-    <DataGrid
-      columns={columns}
-      data={data}
-      onSelectedRows={setOnSelectedRows}
-      updateMyData={updateMyData}
-    />
+    <>
+      <DataGrid name={"testTable"} columns={columns} data={data} />
+      <Dialog
+        title={dataRow.userFullName}
+        handleClickOpen={toggle}
+        open={isShowing}
+      >
+        <UserCreate dataRow={dataRow} toggle={toggle} />
+      </Dialog>
+      <AskDialog
+        open={isShowingDelete}
+        handleClickOpen={rowDelete}
+        handleCloseModal={toggleDelete}
+      />
+    </>
   );
 };
 
