@@ -1,7 +1,4 @@
-// import { TablePagination } from "./TablePagination";
-// import { TableToolbar } from "./TableToolbar";
-// import { TooltipCellRenderer } from "./TooltipCell";
-import { IndeterminateCheckbox } from "@mui/DataGrid/IndeterminateCheckbox";
+import { IndeterminateCheckbox } from "./IndeterminateCheckbox";
 import { Box, TextField } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -97,8 +94,8 @@ const getStyles = (props: any, disableResizing = false, align = "left") => [
   props,
   {
     style: {
-      justifyContent: align === "right" ? "flex-end" : "flex-start",
-      alignItems: "flex-start",
+      // justifyContent: "center",
+      alignItems: "center",
       display: "flex",
     },
   },
@@ -221,22 +218,32 @@ export function DataGrid<T extends Record<string, unknown>>(
           sx={{ height: "100%", whiteSpace: "pre-wrap" }}
           stickyHeader
           aria-label="sticky table"
-          {...getTableProps()}
+          {...tableProps}
         >
           <TableHead>
             {headerGroups.map((headerGroup, inx) => (
               <TableRow {...headerGroup.getHeaderGroupProps()} key={inx}>
                 {headerGroup.headers.map((column, i) => {
+                  const style = {
+                    textAlign: column.align ? column.align : "left ",
+                  } as React.CSSProperties;
+                  const {
+                    key: headerKey,
+                    role: headerRole,
+                    ...getHeaderProps
+                  } = column.getHeaderProps(headerProps);
+                  const { title: groupTitle = "", ...columnGroupByProps } =
+                    column.getGroupByToggleProps();
+                  const { title: sortTitle = "", ...columnSortByProps } =
+                    column.getSortByToggleProps();
                   return (
                     <TableCell
                       align="center"
-                      {...column.getHeaderProps()}
+                      {...getHeaderProps}
                       key={i}
                       sx={{
                         verticalAlign: "middle",
                         p: 1,
-                        display: "flex",
-                        alignItems: "center",
                       }}
                     >
                       <>{column.render("Header")}</>
@@ -280,11 +287,17 @@ export function DataGrid<T extends Record<string, unknown>>(
                   }}
                 >
                   {row.cells.map((cell, i) => {
+                    const {
+                      key: cellKey,
+                      role: cellRole,
+                      ...getCellProps
+                    } = cell.getCellProps(cellProps);
                     return (
                       <TableCell
-                        {...cell.getCellProps()}
+                        {...getCellProps}
                         key={i}
-                        sx={{ p: 1, display: "flex", alignItems: "center" }}
+                        sx={{ p: 1 }}
+                        onClick={cellClickHandler(cell)}
                       >
                         {cell.render("Cell")}
                       </TableCell>

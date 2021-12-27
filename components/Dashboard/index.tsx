@@ -47,6 +47,7 @@ const Dashboard: React.FC<{
         top: 0,
         bottom: 0,
         left: 0,
+        zIndex: 999,
         mt: { lg: 8, xs: 7 },
         direction: "inherit",
         "& .MuiPaper-root": {

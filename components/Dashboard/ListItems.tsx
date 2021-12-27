@@ -48,7 +48,7 @@ const ListItems: React.FC<{
           </>
         )}
       </ListItemButton>
-      {list?.length > 0 && (
+      {list?.length > 0 && openDrawer && (
         <Collapse in={open} timeout="auto" unmountOnExit>
           {list?.map((item, i) => {
             return (

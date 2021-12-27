@@ -39,7 +39,10 @@ const Layout: React.FC = ({ children }): React.ReactElement => {
         component="main"
         sx={{
           p: 3,
-          ml: ({ spacing }) => ({ lg: sidebar ? spacing(30) : spacing(7) }),
+          ml: ({ spacing }) => ({
+            lg: sidebar ? spacing(30) : spacing(7),
+            xs: spacing(6),
+          }),
           transition: ({ transitions }) =>
             transitions.create("margin", {
               easing: transitions.easing.sharp,

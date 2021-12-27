@@ -1,4 +1,4 @@
-import { Box, Dialog, AskDialog, DataGrid } from "@mui";
+import { AskDialog, Box, DataGrid, Dialog } from "@mui";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { useModal } from "hooks";
@@ -6,49 +6,25 @@ import { mainUs } from "i18n";
 import { Options } from "interfaces";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "react-query";
+import { TableInstance } from "react-table";
 import { useUserAll, useUserDelete } from "services";
 import ActionsGrid from "./ActionGrid";
 import UserCreate from "./UserCreate";
-
-export type Person = {
-  message: string;
-  message_count: string;
-  admin_accept: boolean;
-  gender: string;
-  city: string;
-  number: number;
-  total_cost: string;
-};
-
-type PersonData = Person & {
-  subRows?: PersonData[] | undefined;
-};
 
 const UserAll: React.FC = (): React.ReactElement => {
   const queryClient = useQueryClient();
   const { data: dataUserAll } = useUserAll();
   const { mutate } = useUserDelete();
-
-  const [onSelectedRows, setOnSelectedRows] = useState<Options[]>([]);
   const [skipPageReset, setSkipPageReset] = useState(false);
 
   const { isShowing, toggle } = useModal();
   const { isShowing: isShowingDelete, toggle: toggleDelete } = useModal();
-  const [dataRow, setDataRow] = useState<{ [key: string]: any }>({});
+  const [dataRow, setDataRow] = useState<Options>({});
+  const [dataRowAll, setDataRowAlll] = useState<Options[]>([]);
 
   useEffect(() => {
     setSkipPageReset(false);
   }, [dataUserAll]);
-
-  const rowDelete = () => {
-    // toggleDelete();
-    mutate(dataRow.id, {
-      onSuccess: () => {
-        queryClient.invalidateQueries("userAll");
-        toggleDelete();
-      },
-    });
-  };
 
   const columns = useMemo(
     () => [
@@ -121,38 +97,63 @@ const UserAll: React.FC = (): React.ReactElement => {
     []
   );
 
-  const updateMyData = (rowIndex: any, columnId: any, value: any) => {
-    // We also turn on the flag to not reset the page
-    setSkipPageReset(true);
-  };
-
   const data = useMemo(() => {
     return dataUserAll ? dataUserAll : [];
   }, [dataUserAll]);
 
+  const dummy = useCallback(
+    (instance: TableInstance<any>, e?: "edit" | "delete" | "add") => () => {
+      const del = instance.selectedFlatRows.map((item) => item.original);
+      setDataRowAlll(del);
+      if (e === "delete") {
+        toggleDelete();
+      }
+      if (e === "edit") {
+        toggle();
+      }
+    },
+    [toggle, toggleDelete]
+  );
+
+  const rowDelete = () => {
+    mutate(dataRow.id, {
+      onSuccess: () => {
+        toggleDelete();
+        queryClient.invalidateQueries("userAll");
+      },
+    });
+  };
+
   const handleDeleteAll = () => {
-    onSelectedRows?.map((item) =>
-      mutate(item.original.id, {
+    return dataRowAll?.forEach(({ id }) => {
+      mutate(id, {
         onSuccess: () => {
+          toggleDelete();
           queryClient.invalidateQueries("userAll");
         },
-      })
-    );
+      });
+    });
   };
 
   return (
     <>
-      <DataGrid name={"testTable"} columns={columns} data={data} />
-      <Dialog
-        title={dataRow.userFullName}
-        handleClickOpen={toggle}
-        open={isShowing}
-      >
-        <UserCreate dataRow={dataRow} toggle={toggle} />
+      <DataGrid
+        name={"testTable"}
+        columns={columns}
+        data={data}
+        onAdd={dummy}
+        onEdit={dummy}
+        onDelete={dummy}
+      />
+      <Dialog title={dataRow.message} handleClickOpen={toggle} open={isShowing}>
+        <UserCreate
+          dataRow={dataRowAll.length > 0 ? dataRowAll[0] : dataRow}
+          toggle={toggle}
+        />
       </Dialog>
       <AskDialog
         open={isShowingDelete}
-        handleClickOpen={rowDelete}
+        handleClickOpen={dataRowAll.length > 0 ? handleDeleteAll : rowDelete}
         handleCloseModal={toggleDelete}
       />
     </>

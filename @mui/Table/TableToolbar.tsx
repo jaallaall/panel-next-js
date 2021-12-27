@@ -110,9 +110,12 @@ export const SmallIconActionButton = ({
 
 type TableToolbarProps<T extends Record<string, unknown>> = {
   instance: TableInstance<T>;
-  onAdd?: TableMouseEventHandler;
-  onDelete?: TableMouseEventHandler;
-  onEdit?: TableMouseEventHandler;
+  onAdd?: (instance: TableInstance<T>, e?: "add") => React.MouseEventHandler;
+  onDelete?: (
+    instance: TableInstance<T>,
+    e?: "delete"
+  ) => React.MouseEventHandler;
+  onEdit?: (instance: TableInstance<T>, e?: "edit") => React.MouseEventHandler;
 };
 
 export function TableToolbar<T extends Record<string, unknown>>({
@@ -151,9 +154,15 @@ export function TableToolbar<T extends Record<string, unknown>>({
     setAnchorEl(undefined);
   }, []);
 
-  // toolbar with add, edit, delete, filter/search column select.
+  // const handleEddit = () => {
+  //   onEdit()
+  // }
+  // const handleDelete = () => {
+  //   onDelete();
+  // };
+
   return (
-    <Toolbar>
+    <Toolbar sx={{ justifyContent: "space-between" }}>
       <div>
         {onAdd && (
           <InstanceSmallIconActionButton<T>
@@ -172,7 +181,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
           <InstanceSmallIconActionButton<T>
             instance={instance}
             icon={<CreateIcon />}
-            onClick={onEdit}
+            onClick={() => onEdit(instance, "edit")}
             label="Edit"
             enabled={({ state }: TableInstance<T>) =>
               state.selectedRowIds &&
@@ -185,7 +194,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
           <InstanceSmallIconActionButton<T>
             instance={instance}
             icon={<DeleteIcon />}
-            onClick={onDelete}
+            onClick={() => onDelete(instance, "delete")}
             label="Delete"
             enabled={({ state }: TableInstance<T>) =>
               state.selectedRowIds &&

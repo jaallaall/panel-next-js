@@ -11,9 +11,9 @@ const styles: SxPropes = {
 };
 
 const ActionsGrid: React.FC<{
-  setDataRow: (e: any) => void;
+  setDataRow?: (e: any) => void;
   // toggle: () => void;
-  original: Options;
+  original?: Options;
   toggleDelete?: (e?: any) => void;
   handleClickEddit?: (e?: any) => void;
 }> = ({
