@@ -168,7 +168,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
           <InstanceSmallIconActionButton<T>
             instance={instance}
             icon={<AddIcon />}
-            onClick={onAdd}
+            onClick={() => onAdd(instance, "add")}
             label="Add"
             enabled={({ state }: TableInstance<T>) =>
               !state.selectedRowIds ||

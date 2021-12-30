@@ -1,11 +1,11 @@
 import { Button, Gender, Select, TextField } from "@mui";
-import { toggleButtonGroupClasses } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import { mainUs } from "i18n";
 import { Options } from "interfaces";
+import { useRouter } from "next/router";
 import { useQueryClient } from "react-query";
-import { useUserUpdate } from "services";
+import { useUserCreate, useUserUpdate } from "services";
 import { validationSchemaUser } from "utils";
 
 export const countries = [
@@ -24,33 +24,53 @@ export const countries = [
   { code: "AI", label: "gilan", phone: "1-264" },
 ];
 
-const UserCreate: React.FC<{ dataRow: Options; toggle: () => void }> = ({
-  toggle,
-  dataRow,
-}): React.ReactElement => {
+const UserCreate: React.FC<{
+  dataRow?: Options;
+  toggle?: () => void;
+  toggleAdd?: () => void;
+  createUser?: boolean;
+}> = ({ toggle, toggleAdd, dataRow, createUser }): React.ReactElement => {
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useUserUpdate();
+  const { pathname } = useRouter();
+
+  const { mutate, isLoading } = useUserCreate();
+  const { mutate: mutateUpdate } = useUserUpdate();
 
   const formik = useFormik({
     initialValues: {
-      message: dataRow.message,
-      gender: dataRow.query_param.gender,
-      city: dataRow.query_param.city,
-      number: dataRow.number,
+      message: dataRow?.message ?? "",
+      gender: dataRow?.query_param.gender ?? "male",
+      city: dataRow?.query_param.city ?? "",
+      number: dataRow?.number ?? 1,
     },
     validationSchema: validationSchemaUser,
     onSubmit: (values, { resetForm }) => {
-      mutate(
-        { ...values, id: dataRow.id },
-        {
+      if (pathname.endsWith("user-create") || createUser) {
+        mutate(values, {
           onSuccess: () => {
+            if (toggleAdd) {
+              toggleAdd();
+            }
             queryClient.invalidateQueries("userAll");
-            toggle();
             resetForm();
           },
-          onError: (data: any) => {},
-        }
-      );
+        });
+      }
+
+      if (!createUser)
+        mutateUpdate(
+          { ...values, id: dataRow?.id },
+          {
+            onSuccess: () => {
+              if (toggle) {
+                toggle();
+              }
+              queryClient.invalidateQueries("userAll");
+              resetForm();
+            },
+            onError: (data: any) => {},
+          }
+        );
     },
   });
 
@@ -65,6 +85,7 @@ const UserCreate: React.FC<{ dataRow: Options; toggle: () => void }> = ({
         border: "1px solid rgba(0,0,0,.2)",
         p: 2,
       }}
+      id="form"
     >
       <TextField
         name="message"
@@ -89,9 +110,11 @@ const UserCreate: React.FC<{ dataRow: Options; toggle: () => void }> = ({
         formik={formik}
         label={mainUs.number}
       />
-      <Button type="submit" loading={isLoading}>
-        edit
-      </Button>
+      {pathname.endsWith("user-create") && (
+        <Button type="submit" loading={isLoading}>
+          create
+        </Button>
+      )}
     </Stack>
   );
 };

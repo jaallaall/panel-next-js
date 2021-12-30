@@ -4,3 +4,4 @@
 export * from "./functions";
 // export * from "./SvgIcons";
 export * from "./validationSchema";
+export * from "./object";

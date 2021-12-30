@@ -1,6 +1,6 @@
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
+import { useDirMode } from "hooks";
+import { A11y, Navigation, Pagination, Scrollbar } from "swiper";
 import { Swiper, SwiperProps, SwiperSlide } from "swiper/react";
-import { useColorMode } from "hooks";
 
 // Import Swiper styles
 import "swiper/css";
@@ -14,7 +14,7 @@ export const SwiperCarousel: React.FC<
     render: (e: any) => React.ReactElement;
   } & SwiperProps
 > = ({ data, render, ...rest }) => {
-  const { dir } = useColorMode();
+  const { dir } = useDirMode();
   return (
     <Swiper
       // install Swiper modules

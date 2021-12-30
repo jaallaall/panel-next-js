@@ -55,6 +55,14 @@ declare module "react-table" {
     totalMinWidth: number;
   }
 
+  export type UseFiltersOptions<D extends object> = Partial<{
+    manualFilters: boolean;
+    disableFilters: boolean;
+    defaultCanFilter: boolean;
+    filterTypes: FilterTypes<D>;
+    autoResetFilters?: boolean | undefined;
+  }>;
+
   export interface TableOptions<D extends Record<string, unknown>>
     extends UseExpandedOptions<D>,
       UseFiltersOptions<D>,

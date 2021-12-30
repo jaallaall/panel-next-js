@@ -1,5 +1,3 @@
-import { IndeterminateCheckbox } from "./IndeterminateCheckbox";
-import { Box, TextField } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,11 +5,13 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React, {
+import TextField from "@mui/material/TextField";
+import {
   MouseEventHandler,
   PropsWithChildren,
   ReactElement,
   useEffect,
+  useState,
 } from "react";
 import {
   Cell,
@@ -36,9 +36,14 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
+import { camelToWords } from "utils";
+import { ActionsGrid } from "./ActionGrid";
 import { FilterChipBar } from "./FilterChipBar";
+import { fuzzyTextFilter, numericTextFilter } from "./filters";
+import { IndeterminateCheckbox } from "./IndeterminateCheckbox";
 import { TablePagination } from "./TablePagination";
 import { TableToolbar } from "./TableToolbar";
+import { TooltipCellRenderer } from "./TooltipCell";
 
 export interface TableProperties<T extends Record<string, unknown>>
   extends TableOptions<T> {
@@ -47,11 +52,14 @@ export interface TableProperties<T extends Record<string, unknown>>
   onDelete?: (instance: TableInstance<T>) => MouseEventHandler;
   onEdit?: (instance: TableInstance<T>) => MouseEventHandler;
   onClick?: (row: Row<T>) => void;
+  setDataRow?: (e?: any) => void;
+  toggleDelete?: () => void;
+  handleClickEddit?: () => void;
 }
 
-// const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => (
-//   <>{column.id.startsWith("_") ? null : camelToWords(column.id)}</>
-// );
+const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => {
+  return <>{column.id.startsWith("_") ? null : camelToWords(column.id)}</>;
+};
 
 // yes this is recursive, but the depth never exceeds three so it seems safe enough
 const findFirstColumn = <T extends Record<string, unknown>>(
@@ -63,8 +71,8 @@ function DefaultColumnFilter<T extends Record<string, unknown>>({
   columns,
   column,
 }: FilterProps<T>) {
-  const { id, filterValue, setFilter, render } = column;
-  const [value, setValue] = React.useState(filterValue || "");
+  const { id, filterValue, setFilter, render, canFilter } = column;
+  const [value, setValue] = useState(filterValue || "");
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
@@ -74,6 +82,7 @@ function DefaultColumnFilter<T extends Record<string, unknown>>({
   }, [filterValue]);
 
   const isFirstColumn = findFirstColumn(columns) === column;
+
   return (
     <TextField
       name={id}
@@ -81,7 +90,7 @@ function DefaultColumnFilter<T extends Record<string, unknown>>({
       InputLabelProps={{ htmlFor: id }}
       value={value}
       autoFocus={isFirstColumn}
-      variant="standard"
+      variant="outlined"
       onChange={handleChange}
       onBlur={(e) => {
         setFilter(e.target.value || undefined);
@@ -123,7 +132,37 @@ const selectionHook = (hooks: Hooks<any>) => {
         <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
       ),
     },
+
     ...columns,
+    {
+      id: "actions",
+      Header: () => <>{"actions"}</>,
+      Cell: ({
+        setDataRow,
+        toggleDelete,
+        handleClickEddit,
+        row,
+      }: React.PropsWithChildren<
+        CellProps<any, any> & {
+          setDataRow: (e?: any) => void;
+          toggleDelete: () => void;
+          handleClickEddit: () => void;
+        }
+      >) => {
+        return (
+          <ActionsGrid
+            toggleDelete={() => {
+              toggleDelete();
+              setDataRow(row.original);
+            }}
+            handleClickEddit={() => {
+              handleClickEddit();
+              setDataRow(row.original);
+            }}
+          />
+        );
+      },
+    },
   ]);
   hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
     // fix the parent group of the selection button to not be resizable
@@ -149,8 +188,8 @@ const cellProps = <T extends Record<string, unknown>>(
 
 const defaultColumn = {
   Filter: DefaultColumnFilter,
-  //   Cell: TooltipCellRenderer,
-  //   Header: DefaultHeader,
+  Cell: TooltipCellRenderer,
+  Header: DefaultHeader,
   // When using the useFlexLayout:
   minWidth: 5,
   width: 120,
@@ -170,10 +209,10 @@ const hooks = [
   selectionHook,
 ];
 
-// const filterTypes = {
-//   fuzzyText: fuzzyTextFilter,
-//   numeric: numericTextFilter,
-// };
+const filterTypes = {
+  fuzzyText: fuzzyTextFilter,
+  numeric: numericTextFilter,
+};
 
 export function DataGrid<T extends Record<string, unknown>>(
   props: PropsWithChildren<TableProperties<T>>
@@ -184,9 +223,8 @@ export function DataGrid<T extends Record<string, unknown>>(
     {
       ...props,
       columns,
-      //   filterTypes,
       defaultColumn,
-      initialState: { pageIndex: 0, pageSize: 2 },
+      initialState: { pageIndex: 0, pageSize: 9 },
     },
     ...hooks
   );
@@ -247,9 +285,9 @@ export function DataGrid<T extends Record<string, unknown>>(
                       }}
                     >
                       <>{column.render("Header")}</>
-                      {column.canFilter && (
+                      {/* {column.canFilter && (
                         <>{column.canFilter ? column.render("Filter") : null}</>
-                      )}
+                      )} */}
 
                       <span>
                         {column.isSorted

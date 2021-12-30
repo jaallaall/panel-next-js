@@ -1,4 +1,4 @@
-import { AskDialog, Box, DataGrid, Dialog } from "@mui";
+import { AskDialog, Button, DataGrid, Dialog } from "@mui";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { useModal } from "hooks";
@@ -8,40 +8,33 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "react-query";
 import { TableInstance } from "react-table";
 import { useUserAll, useUserDelete } from "services";
-import ActionsGrid from "./ActionGrid";
 import UserCreate from "./UserCreate";
 
 const UserAll: React.FC = (): React.ReactElement => {
   const queryClient = useQueryClient();
   const { data: dataUserAll } = useUserAll();
   const { mutate } = useUserDelete();
-  const [skipPageReset, setSkipPageReset] = useState(false);
-
-  const { isShowing, toggle } = useModal();
-  const { isShowing: isShowingDelete, toggle: toggleDelete } = useModal();
+  const [createUser, setCreateUser] = useState<boolean>(false);
   const [dataRow, setDataRow] = useState<Options>({});
   const [dataRowAll, setDataRowAlll] = useState<Options[]>([]);
 
-  useEffect(() => {
-    setSkipPageReset(false);
-  }, [dataUserAll]);
+  const { isShowing, toggle } = useModal();
+  const { isShowing: isShowingDelete, toggle: toggleDelete } = useModal();
+  const { isShowing: isShowingAdd, toggle: toggleAdd } = useModal();
 
   const columns = useMemo(
     () => [
       {
         Header: mainUs.message,
         accessor: "message",
-        Filter: "",
       },
       {
         Header: mainUs.message_count,
         accessor: "message_count",
-        Filter: "",
       },
       {
         Header: mainUs.admin_accept,
         accessor: "admin_accept",
-        Filter: "",
         Cell: ({ row: { original } }: { row: { original: Options } }) => {
           if (original.admin_accept) {
             return <CheckBoxIcon />;
@@ -52,54 +45,34 @@ const UserAll: React.FC = (): React.ReactElement => {
       {
         Header: mainUs.gender,
         accessor: "gender",
-        Filter: "",
         Cell: ({ row: { original } }: { row: { original: Options } }) => {
-          return <Box>{original.query_param.gender}</Box>;
+          return <>{original.query_param.gender}</>;
         },
       },
       {
         Header: mainUs.city,
         accessor: "city",
-        Filter: "",
         Cell: ({ row: { original } }: { row: { original: Options } }) => {
-          return <Box>{original.query_param.city}</Box>;
+          return <>{original.query_param.city}</>;
         },
       },
       {
         Header: mainUs.number,
         accessor: "number",
-        Filter: "",
       },
       {
         Header: mainUs.total_cost,
         accessor: "total_cost",
-        Filter: "",
-      },
-      {
-        id: "details",
-        Cell: ({ row: { original } }: { row: { original: Options } }) => (
-          <ActionsGrid
-            setDataRow={setDataRow}
-            original={original}
-            // toggle={toggle}
-            toggleDelete={() => {
-              toggleDelete();
-              setDataRow(original);
-            }}
-            handleClickEddit={() => {
-              toggle();
-              setDataRow(original);
-            }}
-          />
-        ),
       },
     ],
     []
   );
 
-  const data = useMemo(() => {
-    return dataUserAll ? dataUserAll : [];
-  }, [dataUserAll]);
+  useEffect(() => {
+    if (!isShowingAdd) setCreateUser(false);
+  }, [isShowingAdd]);
+
+  const data = useMemo(() => (dataUserAll ? dataUserAll : []), [dataUserAll]);
 
   const dummy = useCallback(
     (instance: TableInstance<any>, e?: "edit" | "delete" | "add") => () => {
@@ -111,8 +84,12 @@ const UserAll: React.FC = (): React.ReactElement => {
       if (e === "edit") {
         toggle();
       }
+      if (e === "add") {
+        setCreateUser(true);
+        toggleAdd();
+      }
     },
-    [toggle, toggleDelete]
+    [toggle, toggleDelete, toggleAdd]
   );
 
   const rowDelete = () => {
@@ -124,8 +101,8 @@ const UserAll: React.FC = (): React.ReactElement => {
     });
   };
 
-  const handleDeleteAll = () => {
-    return dataRowAll?.forEach(({ id }) => {
+  const handleDeleteAll = () =>
+    dataRowAll?.forEach(({ id }) => {
       mutate(id, {
         onSuccess: () => {
           toggleDelete();
@@ -133,7 +110,6 @@ const UserAll: React.FC = (): React.ReactElement => {
         },
       });
     });
-  };
 
   return (
     <>
@@ -144,12 +120,47 @@ const UserAll: React.FC = (): React.ReactElement => {
         onAdd={dummy}
         onEdit={dummy}
         onDelete={dummy}
+        setDataRow={setDataRow}
+        toggleDelete={() => toggleDelete()}
+        handleClickEddit={() => toggle()}
       />
-      <Dialog title={dataRow.message} handleClickOpen={toggle} open={isShowing}>
+      <Dialog
+        title={dataRow.message}
+        handleClickOpen={toggle}
+        open={isShowing}
+        dialogActions={
+          <Button
+            type="submit"
+            // loading={loading}
+            form="form"
+            sx={{ width: "100%" }}
+          >
+            edit
+          </Button>
+        }
+      >
         <UserCreate
           dataRow={dataRowAll.length > 0 ? dataRowAll[0] : dataRow}
           toggle={toggle}
+          createUser={createUser}
         />
+      </Dialog>
+      <Dialog
+        title={dataRow.message}
+        handleClickOpen={toggleAdd}
+        open={isShowingAdd}
+        dialogActions={
+          <Button
+            type="submit"
+            // loading={isLoading}
+            form="form"
+            sx={{ width: "100%" }}
+          >
+            create
+          </Button>
+        }
+      >
+        <UserCreate toggleAdd={toggleAdd} createUser={createUser} />
       </Dialog>
       <AskDialog
         open={isShowingDelete}

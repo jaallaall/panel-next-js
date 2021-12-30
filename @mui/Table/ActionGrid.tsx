@@ -1,6 +1,5 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import CreateIcon from "@mui/icons-material/CreateOutlined";
+import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import { Options, SxPropes } from "interfaces";
@@ -10,7 +9,7 @@ const styles: SxPropes = {
   minWidth: 40,
 };
 
-const ActionsGrid: React.FC<{
+export const ActionsGrid: React.FC<{
   setDataRow?: (e: any) => void;
   // toggle: () => void;
   original?: Options;
@@ -40,7 +39,7 @@ const ActionsGrid: React.FC<{
         <RemoveRedEyeIcon />
       </IconButton> */}
       <IconButton sx={styles} onClick={handleClickEddit}>
-        <EditIcon />
+        <CreateIcon />
       </IconButton>
       <IconButton sx={styles} onClick={toggleDelete}>
         <DeleteIcon />
@@ -48,5 +47,3 @@ const ActionsGrid: React.FC<{
     </Stack>
   );
 };
-
-export default ActionsGrid;
