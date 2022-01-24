@@ -26,10 +26,21 @@ This project includes a powerful grid and form and slider
 هدف از این نمونه اولیه تأثیرگذاری بر روند ارزیابی توانایی های من است
 این پروژه شامل یک گرید و فرم و اسلایدر قدرتمند می باشد
 
-### Technologies used
+## Technologies used
 
-Next.js & Material UI5 & Typescript & React-query & React-table & hooks & Context
-& Implement forms with Formik & Eslint & Docker
+### Next.js with Typescript & hooks
+
+### Material UI5
+
+### React-query
+
+### React-table
+
+### Context
+
+### Implement forms with Formik & yup
+
+### Eslint & prettier & Docker
 
 Grid section that is fully coded with details and is very precise and ready to use
 
