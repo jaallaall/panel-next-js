@@ -1,4 +1,4 @@
-## TypeScript Next.js example
+## TypeScript Next.js example prototype panel admin
 
 This is a project that shows the usage of Next.js with TypeScript.
 
@@ -32,17 +32,21 @@ yarn dev
 
 ### Material UI5
 
-### React-query
+### React-query & Axios
 
-### React-table
+### React-table & Dialog MUI
 
 ### Context
 
 ### Implement forms with Formik & yup
 
-### Eslint & prettier & Docker
+### Eslint & Prettier & Docker
 
-## Prototype panel admin
+### swiper
+
+###
+
+## Notes
 
 A prototype admin panel to review project code, framework, and architecture
 
