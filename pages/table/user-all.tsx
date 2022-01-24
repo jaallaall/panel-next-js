@@ -2,7 +2,7 @@ import { nextDynamic } from "components";
 import { getLayout } from "layouts";
 
 const UserAllPage = () => {
-  const UserAll = nextDynamic("MessageMarketing/UserAll");
+  const UserAll = nextDynamic("Table/UserAll");
   return <UserAll />;
 };
 

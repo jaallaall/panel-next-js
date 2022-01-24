@@ -267,6 +267,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@ggascoigne/namor@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@ggascoigne/namor/-/namor-2.0.2.tgz#7b3de57d4109f13474c2653f8950e6e5953a5d3a"
+  integrity sha512-AKvn8jC5cVshmbCSVcAzfFkxno6lKH/InSgyC8wnSIltL6PpwAzMJstxJggS2VwUdjr+ZjPADjoO2mLnH5tsSQ==
+
 "@hapi/accept@5.0.2":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@hapi/accept/-/accept-5.0.2.tgz#ab7043b037e68b722f93f376afb05e85c0699523"

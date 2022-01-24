@@ -32,3 +32,42 @@ export const validationSchemaUser = yup.object({
   city: yup.string().required("This field is required"),
   number: yup.number().required("This field is required"),
 });
+
+export const validationSchemaTest = yup.object({
+  name: yup.string().required("This field is required"),
+  gender: yup.string().required("This field is required"),
+  countries: yup
+    .object()
+    .shape({
+      label: yup.string(),
+    })
+    .nullable()
+    .required("This field is required."),
+  countries1: yup
+    .array()
+    .of(
+      yup.object().shape({
+        label: yup.string().required("This field is required."),
+      })
+    )
+    .min(1, "Must have at least one countries1"),
+  birthDate: yup
+    .date()
+    .nullable()
+    .required("This field is required")
+    .min(new Date(), "Start Date must be later than today"),
+  film: yup.string().required("This field is required"),
+  file: yup
+    .mixed()
+    .required("این فیلد اجباری است")
+    .test(
+      "fileSize",
+      "اندازه بیش از حد مجاز است",
+      (value) => value && value.size <= FILE_SIZE
+    )
+    .test(
+      "فرمت فایل",
+      "فرمت نامعتبر است",
+      (value) => value && SUPPORTED_FORMATS.includes(value.type)
+    ),
+});

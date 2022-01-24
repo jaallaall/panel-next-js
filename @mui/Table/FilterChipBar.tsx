@@ -1,32 +1,13 @@
-import { Chip } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import React, { ReactElement, useCallback } from "react";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import Typography from "@mui/material/Typography";
+import { useCallback } from "react";
 import {
   ColumnInstance,
   FilterValue,
   IdType,
   TableInstance,
 } from "react-table";
-
-const useStyles = makeStyles({
-  filtersActiveLabel: {
-    color: "#998",
-    fontSize: "14px",
-    paddingRight: 10,
-  },
-  chipZone: {
-    padding: "18px 0 5px 10px",
-    width: "100%",
-  },
-  chipLabel: {
-    fontWeight: 500,
-    marginRight: 5,
-  },
-  filterChip: {
-    marginRight: 4,
-    color: "#222",
-  },
-});
 
 type FilterChipBarProps<T extends Record<string, unknown>> = {
   instance: TableInstance<T>;
@@ -47,8 +28,7 @@ const getFilterValue = (
 
 export function FilterChipBar<T extends Record<string, unknown>>({
   instance,
-}: FilterChipBarProps<T>): ReactElement | null {
-  const classes = useStyles({});
+}: FilterChipBarProps<T>): React.ReactElement | null {
   const {
     allColumns,
     setFilter,
@@ -62,8 +42,13 @@ export function FilterChipBar<T extends Record<string, unknown>>({
   );
 
   return Object.keys(filters).length > 0 ? (
-    <div className={classes.chipZone}>
-      <span className={classes.filtersActiveLabel}>Active filters:</span>
+    <Box sx={{ padding: "18px 0 5px 10px", width: "100%" }}>
+      <Typography
+        component="span"
+        sx={{ color: "#998", fontSize: "14px", paddingRight: 10 }}
+      >
+        Active filters:
+      </Typography>
       {filters &&
         allColumns.map((column) => {
           const filter = filters.find((f) => f.id === column.id);
@@ -71,13 +56,16 @@ export function FilterChipBar<T extends Record<string, unknown>>({
           return (
             value && (
               <Chip
-                className={classes.filterChip}
+                sx={{ marginRight: 4, color: "#222" }}
                 key={column.id}
                 label={
                   <>
-                    <span className={classes.chipLabel}>
+                    <Typography
+                      component="span"
+                      sx={{ fontWeight: 500, marginRight: 5 }}
+                    >
                       {column.render("Header")}:{" "}
-                    </span>
+                    </Typography>
                     {getFilterValue(column, value)}
                   </>
                 }
@@ -87,6 +75,6 @@ export function FilterChipBar<T extends Record<string, unknown>>({
             )
           );
         })}
-    </div>
+    </Box>
   ) : null;
 }

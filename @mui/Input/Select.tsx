@@ -2,16 +2,16 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { FormikProps } from "formik";
 
-export const SelectCustom: React.FC<
-  {
-    options: { [key: string]: any }[];
-    label?: React.ReactNode;
-    id?: string;
-    titleBased: string;
-    formik?: FormikProps<any>;
-    name: string;
-  } & TextFieldProps
-> = ({
+export type SelectProps = {
+  options: { [key: string]: any }[];
+  label?: React.ReactNode;
+  id?: string;
+  titleBased: string;
+  formik?: FormikProps<any>;
+  name: string;
+} & TextFieldProps;
+
+export const SelectCustom: React.FC<SelectProps> = ({
   options,
   label,
   id,

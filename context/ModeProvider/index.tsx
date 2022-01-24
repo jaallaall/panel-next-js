@@ -22,14 +22,14 @@ export const ColorModeContext = createContext({
 
 export const DirectionModeContext = createContext({
   toggleDirectionMode: () => {},
-  dir: "ltr",
+  dir: "rtl",
 });
 
 export const ColorModeProvider: React.FC = ({
   children,
 }): React.ReactElement => {
   const [mode, setMode] = useState<"light" | "dark">("light");
-  const [dir, setDir] = useState<"rtl" | "ltr">("ltr");
+  const [dir, setDir] = useState<"rtl" | "ltr">("rtl");
   const [cookie, setCookie] = useCookies(["theme"]);
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 import { Tooltip as MuiTooltip } from "@mui/material";
-import React, { CSSProperties } from "react";
 import { CellProps } from "react-table";
 
 export const TooltipCellRenderer: React.FC<CellProps<any>> = ({
@@ -26,7 +25,7 @@ export const TooltipCell: React.FC<TooltipProps> = ({
         overflow: "hidden",
         whiteSpace: "nowrap",
       }}
-      style={{ textAlign: align } as CSSProperties}
+      style={{ textAlign: align } as React.CSSProperties}
     >
       <span>{text}</span>
     </MuiTooltip>

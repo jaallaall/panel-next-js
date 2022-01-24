@@ -1,6 +1,7 @@
-import { Box } from "@mui";
+import Box from "@mui/material/Box";
 import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
-import { Button, Divider } from "@mui/material";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useColorMode, useDirMode } from "hooks";

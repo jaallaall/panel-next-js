@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
+import { useDebounce, useLocalStorage } from "hooks";
 import {
   MouseEventHandler,
   PropsWithChildren,
@@ -29,6 +30,7 @@ import {
   useExpanded,
   useFilters,
   useFlexLayout,
+  useGlobalFilter,
   useGroupBy,
   usePagination,
   useResizeColumns,
@@ -55,6 +57,7 @@ export interface TableProperties<T extends Record<string, unknown>>
   setDataRow?: (e?: any) => void;
   toggleDelete?: () => void;
   handleClickEddit?: () => void;
+  sizePage: number;
 }
 
 const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => {
@@ -200,6 +203,7 @@ const hooks = [
   useColumnOrder,
   useFilters,
   useGroupBy,
+  useGlobalFilter,
   useSortBy,
   useExpanded,
   useFlexLayout,
@@ -217,14 +221,17 @@ const filterTypes = {
 export function DataGrid<T extends Record<string, unknown>>(
   props: PropsWithChildren<TableProperties<T>>
 ): ReactElement {
-  const { name, columns, onAdd, onDelete, onEdit, onClick } = props;
-
+  const { name, columns, onAdd, onDelete, onEdit, onClick, sizePage } = props;
+  const [initialState, setInitialState] = useLocalStorage(
+    `tableState:${name}`,
+    {}
+  );
   const instance = useTable<T>(
     {
       ...props,
       columns,
       defaultColumn,
-      initialState: { pageIndex: 0, pageSize: 9 },
+      initialState,
     },
     ...hooks
   );
@@ -237,6 +244,20 @@ export function DataGrid<T extends Record<string, unknown>>(
     prepareRow,
     state,
   } = instance;
+  const debouncedState = useDebounce(state, 500);
+
+  useEffect(() => {
+    const { sortBy, filters, pageSize, columnResizing, hiddenColumns } =
+      debouncedState;
+    const val = {
+      sortBy,
+      filters,
+      pageSize: sizePage ?? 10,
+      columnResizing,
+      hiddenColumns,
+    };
+    setInitialState(val);
+  }, [setInitialState, debouncedState, sizePage]);
 
   const cellClickHandler = (cell: Cell<T>) => () => {
     onClick &&
@@ -301,15 +322,6 @@ export function DataGrid<T extends Record<string, unknown>>(
                 })}
               </TableRow>
             ))}
-            {/* <TableRow>
-              <TableCell colSpan={visibleColumns.length}>
-                <GlobalFilter
-                  preGlobalFilteredRows={preGlobalFilteredRows}
-                  globalFilter={state.globalFilter}
-                  setGlobalFilter={setGlobalFilter}
-                />
-              </TableCell>
-            </TableRow> */}
           </TableHead>
           <TableBody {...getTableBodyProps()}>
             {page.map((row, inx) => {
@@ -347,7 +359,7 @@ export function DataGrid<T extends Record<string, unknown>>(
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination<T> instance={instance} />
+      <TablePagination<T> instance={instance} sizePage={sizePage} />
     </Paper>
   );
 }

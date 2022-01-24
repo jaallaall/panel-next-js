@@ -1,6 +1,14 @@
 {
+  "table": "جدول",
+  "forms": "فرم ها",
+  "dashboard": "پیشخوان",
+  "messageMarketing": "مارکت پیام",
+  "userCreate": "ساخت کاربر",
+  "userAll": "همه کاربران",
+  "swiper": "اسلایدر",
   "type": "نوع",
   "email": "ایمیل",
   "phoneNumber": "شماره تماس",
-  "city": "شهر"
+  "city": "شهر",
+  "slide": "اسلایدر"
 }

@@ -1,6 +1,7 @@
 import { Breadcrumbs } from "@mui";
 import Stack from "@mui/material/Stack";
 import Dashboard from "components/Dashboard";
+import { menu } from "components/Dashboard/menu";
 import { Header } from "components/Header";
 import { menuUs } from "i18n";
 import type { NextPage } from "next";
@@ -51,7 +52,11 @@ const Layout: React.FC = ({ children }): React.ReactElement => {
           mt: 8,
         }}
       >
-        <Breadcrumbs home={menuUs.Doshboard} sx={{ color: "primary.100" }} />
+        <Breadcrumbs
+          home={menuUs.Doshboard}
+          menu={menu}
+          sx={{ color: "primary.100" }}
+        />
 
         {children}
       </Stack>

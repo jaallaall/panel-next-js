@@ -3,16 +3,14 @@ import CreateIcon from "@mui/icons-material/CreateOutlined";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import ViewColumnsIcon from "@mui/icons-material/ViewColumn";
-import { Button, IconButton, Toolbar, Tooltip } from "@mui/material";
-import React, {
-  MouseEvent,
-  MouseEventHandler,
-  PropsWithChildren,
-  ReactElement,
-  useCallback,
-  useState,
-} from "react";
-import { TableInstance } from "react-table";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import { useCallback, useState } from "react";
+import { TableInstance, useAsyncDebounce } from "react-table";
 import { TableMouseEventHandler } from "react-table-config";
 import { ColumnHidePage } from "./ColumnHidePage";
 import { FilterPage } from "./FilterPage";
@@ -28,7 +26,7 @@ type InstanceActionButton<T extends Record<string, unknown>> = {
 
 type ActionButton = {
   icon?: JSX.Element;
-  onClick: MouseEventHandler;
+  onClick: React.MouseEventHandler;
   enabled?: boolean;
   label: string;
   variant?: "right" | "left";
@@ -40,7 +38,7 @@ export const InstanceLabeledActionButton = <T extends Record<string, unknown>>({
   onClick,
   label,
   enabled = () => true,
-}: InstanceActionButton<T>): ReactElement => (
+}: InstanceActionButton<T>): React.ReactElement => (
   <Button
     variant="contained"
     color="primary"
@@ -57,7 +55,7 @@ export const LabeledActionButton = ({
   onClick,
   label,
   enabled = true,
-}: ActionButton): ReactElement => (
+}: ActionButton): React.ReactElement => (
   <Button
     variant="contained"
     color="primary"
@@ -78,7 +76,7 @@ export const InstanceSmallIconActionButton = <
   label,
   enabled = () => true,
   variant,
-}: InstanceActionButton<T>): ReactElement => {
+}: InstanceActionButton<T>): React.ReactElement => {
   return (
     <Tooltip title={label} aria-label={label}>
       <span>
@@ -96,7 +94,7 @@ export const SmallIconActionButton = ({
   label,
   enabled = true,
   variant,
-}: ActionButton): ReactElement => {
+}: ActionButton): React.ReactElement => {
   return (
     <Tooltip title={label} aria-label={label}>
       <span>
@@ -123,17 +121,22 @@ export function TableToolbar<T extends Record<string, unknown>>({
   onAdd,
   onDelete,
   onEdit,
-}: PropsWithChildren<TableToolbarProps<T>>): ReactElement | null {
-  const { columns } = instance;
+}: React.PropsWithChildren<TableToolbarProps<T>>): React.ReactElement | null {
+  const { columns, preGlobalFilteredRows, setGlobalFilter, state } = instance;
+  const count = preGlobalFilteredRows?.length ?? 0;
   const [anchorEl, setAnchorEl] = useState<Element | undefined>(undefined);
   const [columnsOpen, setColumnsOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const hideableColumns = columns.filter(
     (column) => !(column.id === "_selector")
   );
+  const [value, setValue] = useState(state.globalFilter);
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
 
   const handleColumnsClick = useCallback(
-    (event: MouseEvent) => {
+    (event: React.MouseEvent) => {
       setAnchorEl(event.currentTarget);
       setColumnsOpen(true);
     },
@@ -141,7 +144,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
   );
 
   const handleFilterClick = useCallback(
-    (event: MouseEvent) => {
+    (event: React.MouseEvent) => {
       setAnchorEl(event.currentTarget);
       setFilterOpen(true);
     },
@@ -154,16 +157,9 @@ export function TableToolbar<T extends Record<string, unknown>>({
     setAnchorEl(undefined);
   }, []);
 
-  // const handleEddit = () => {
-  //   onEdit()
-  // }
-  // const handleDelete = () => {
-  //   onDelete();
-  // };
-
   return (
     <Toolbar sx={{ justifyContent: "space-between" }}>
-      <div>
+      <Box>
         {onAdd && (
           <InstanceSmallIconActionButton<T>
             instance={instance}
@@ -203,8 +199,30 @@ export function TableToolbar<T extends Record<string, unknown>>({
             variant="left"
           />
         )}
-      </div>
-      <div>
+      </Box>
+      <Box sx={{ flex: "auto", pl: 4 }}>
+        <TextField
+          value={value || ""}
+          onChange={(e) => {
+            setValue(e.target.value);
+            onChange(e.target.value);
+          }}
+          placeholder={`${count} records...`}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              height: 40,
+            },
+            "& .MuiOutlinedInput-input": {
+              py: 1,
+            },
+            "& .MuiInputLabel-root": {
+              top: -6,
+            },
+          }}
+          label={"search"}
+        />
+      </Box>
+      <Box>
         <ColumnHidePage<T>
           instance={instance}
           onClose={handleClose}
@@ -231,7 +249,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
           label="Filter by columns"
           variant="right"
         />
-      </div>
+      </Box>
     </Toolbar>
   );
 }

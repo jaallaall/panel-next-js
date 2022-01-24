@@ -5,7 +5,12 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import { FormikProps } from "formik";
 
-export const Gender: React.FC<{ name: string; formik?: FormikProps<any> }> = ({
+export interface GenderProps {
+  name: string;
+  formik?: FormikProps<any>;
+}
+
+export const Gender: React.FC<GenderProps> = ({
   name,
   formik,
 }): React.ReactElement => {

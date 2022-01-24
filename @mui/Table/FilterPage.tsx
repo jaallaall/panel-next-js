@@ -33,72 +33,70 @@ export function FilterPage<T extends Record<string, unknown>>({
   }, [setAllFilters]);
 
   return (
-    <div>
-      <Popover
-        anchorEl={anchorEl}
-        id={"popover-filters"}
-        onClose={onClose}
-        open={show}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        sx={{ position: "absolute", top: 18, right: 21 }}
-      >
-        <Box sx={{ p: 3 }}>
-          <Typography
+    <Popover
+      anchorEl={anchorEl}
+      id={"popover-filters"}
+      onClose={onClose}
+      open={show}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      sx={{ position: "absolute", top: 18, right: 21 }}
+    >
+      <Box sx={{ p: 3 }}>
+        <Typography
+          sx={{
+            fontWeight: 500,
+            padding: "0 24px 24px 0",
+            textTransform: "uppercase",
+          }}
+        >
+          Filters
+        </Typography>
+        <form onSubmit={onSubmit}>
+          <Button
+            sx={{ position: "absolute", top: 18, right: 21 }}
+            color="primary"
+            onClick={resetFilters}
+          >
+            Reset
+          </Button>
+          <Box
             sx={{
-              fontWeight: 500,
-              padding: "0 24px 24px 0",
-              textTransform: "uppercase",
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 218px)",
+              "@media (max-width: 600px)": {
+                gridTemplateColumns: "repeat(1, 180px)",
+              },
+              gridColumnGap: 16,
+              gridRowGap: 16,
             }}
           >
-            Filters
-          </Typography>
-          <form onSubmit={onSubmit}>
-            <Button
-              sx={{ position: "absolute", top: 18, right: 21 }}
-              color="primary"
-              onClick={resetFilters}
-            >
-              Reset
-            </Button>
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 218px)",
-                "@media (max-width: 600px)": {
-                  gridTemplateColumns: "repeat(1, 180px)",
-                },
-                gridColumnGap: 16,
-                gridRowGap: 16,
-              }}
-            >
-              {allColumns
-                .filter((it) => it.canFilter)
-                .map((column) => (
-                  <Box
-                    key={column.id}
-                    sx={{
-                      width: "100%",
-                      display: "inline-flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    {column.render("Filter")}
-                  </Box>
-                ))}
-            </Box>
-            <Button sx={{ display: "none" }} type={"submit"}>
-              &nbsp;
-            </Button>
-          </form>
-        </Box>
-      </Popover>
-    </div>
+            {allColumns
+              .filter((it) => it.canFilter)
+              .map((column) => (
+                <Box
+                  key={column.id}
+                  sx={{
+                    width: "100%",
+                    display: "inline-flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  {column.render("Filter")}
+                </Box>
+              ))}
+          </Box>
+          <Button sx={{ display: "none" }} type={"submit"}>
+            &nbsp;
+          </Button>
+        </form>
+      </Box>
+    </Popover>
   );
 }

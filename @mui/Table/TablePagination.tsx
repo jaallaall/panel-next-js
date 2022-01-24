@@ -5,10 +5,10 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import { Stack, TablePagination as _MuiTablePagination } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@mui/material/styles";
-import React, { PropsWithChildren, ReactElement, useCallback } from "react";
+import { memo, useCallback } from "react";
 import { TableInstance } from "react-table";
 
-const rowsPerPageOptions = [10, 25, 50];
+// const rowsPerPageOptions = [10, 25, 50];
 
 // avoid all of the redraws caused by the internal withStyles
 const interestingPropsEqual = (prevProps: any, nextProps: any) =>
@@ -20,7 +20,7 @@ const interestingPropsEqual = (prevProps: any, nextProps: any) =>
 
 // a bit of a type hack to keep OverridableComponent working as desired
 type T = typeof _MuiTablePagination;
-const MuiTablePagination: T = React.memo(
+const MuiTablePagination: T = memo(
   _MuiTablePagination,
   interestingPropsEqual
 ) as T;
@@ -106,8 +106,12 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 }
 
 export function TablePagination<T extends Record<string, unknown>>({
+  sizePage,
   instance,
-}: PropsWithChildren<{ instance: TableInstance<T> }>): ReactElement | null {
+}: React.PropsWithChildren<{
+  instance: TableInstance<T>;
+  sizePage: number;
+}>): React.ReactElement | null {
   const {
     state: { pageIndex, pageSize, rowCount = instance.rows.length },
     gotoPage,
@@ -115,6 +119,10 @@ export function TablePagination<T extends Record<string, unknown>>({
     previousPage,
     setPageSize,
   } = instance;
+
+  // useEffect(() => {
+  //   setPageSize(Number(rowsPerPageOptions[0]));
+  // }, []);
 
   const handleChangePage = useCallback(
     (
@@ -139,17 +147,22 @@ export function TablePagination<T extends Record<string, unknown>>({
     [setPageSize]
   );
 
+  const rowOptions = Array.from(
+    { length: rowCount > sizePage ? Math.ceil(rowCount / sizePage) + 1 : 2 },
+    (_, i) => i * sizePage
+  ).filter((num) => num > 0);
+
   return rowCount ? (
     <MuiTablePagination
-      rowsPerPageOptions={rowsPerPageOptions}
+      rowsPerPageOptions={rowOptions}
       component="div"
       count={rowCount}
       rowsPerPage={pageSize}
       page={pageIndex}
       SelectProps={{
-        inputProps: { "aria-label": "rows per page" },
-        // defaultValue: rowsPerPageOptions[0],
-        // native: true,
+        inputProps: {
+          "aria-label": "rows per page",
+        },
       }}
       onPageChange={handleChangePage}
       onRowsPerPageChange={onChangeRowsPerPage}

@@ -19,7 +19,7 @@ const Helmet: React.FC<{ title?: string }> = ({
 
   const tit =
     pathname === "/"
-      ? menuUs.doshboard
+      ? menuUs.Doshboard
       : (menuUs as any)[
           capitalizeFirstLetter(pathname?.split("/")[1].split("-").join(" "))
         ];

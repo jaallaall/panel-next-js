@@ -1,4 +1,11 @@
-import { AskDialog, Button, DataGrid, Dialog } from "@mui";
+import {
+  AskDialog,
+  Button,
+  DataGrid,
+  DatePickerFilter,
+  Dialog,
+  SliderColumnFilter,
+} from "@mui";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { useModal } from "hooks";
@@ -31,6 +38,7 @@ const UserAll: React.FC = (): React.ReactElement => {
       {
         Header: mainUs.message_count,
         accessor: "message_count",
+        Filter: DatePickerFilter,
       },
       {
         Header: mainUs.admin_accept,
@@ -59,6 +67,7 @@ const UserAll: React.FC = (): React.ReactElement => {
       {
         Header: mainUs.number,
         accessor: "number",
+        Filter: SliderColumnFilter,
       },
       {
         Header: mainUs.total_cost,
@@ -123,6 +132,7 @@ const UserAll: React.FC = (): React.ReactElement => {
         setDataRow={setDataRow}
         toggleDelete={() => toggleDelete()}
         handleClickEddit={() => toggle()}
+        sizePage={2}
       />
       <Dialog
         title={dataRow.message}
@@ -146,7 +156,7 @@ const UserAll: React.FC = (): React.ReactElement => {
         />
       </Dialog>
       <Dialog
-        title={dataRow.message}
+        title="add"
         handleClickOpen={toggleAdd}
         open={isShowingAdd}
         dialogActions={

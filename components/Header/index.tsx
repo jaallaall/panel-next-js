@@ -1,7 +1,10 @@
-import { Box } from "@mui";
+import Box from "@mui/material/Box";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { useTheme } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
@@ -11,7 +14,6 @@ import Typography from "@mui/material/Typography";
 import { forwardRef } from "react";
 import AvatarList from "./Avatar";
 import Search from "./Search";
-import SettingsIcon from "@mui/icons-material/Settings";
 
 const drawerWidth: number = 240;
 
@@ -40,6 +42,8 @@ function HeaderRef(
   ref?: React.ForwardedRef<HTMLDivElement>
 ): React.ReactElement {
   const { toggleDrawer, open, handleClickOpen } = props;
+
+  const { direction } = useTheme();
 
   return (
     <AppBar
@@ -73,7 +77,7 @@ function HeaderRef(
       >
         {open && (
           <IconButton onClick={toggleDrawer} color="inherit">
-            <ChevronLeftIcon />
+            {direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         )}
       </Toolbar>

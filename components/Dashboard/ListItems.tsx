@@ -1,6 +1,7 @@
 import { ExpandMore } from "@mui/icons-material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Collapse, ListItemButton } from "@mui/material";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { Collapse, ListItemButton, useTheme } from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
 import { useState } from "react";
 import { Link } from "@mui";
@@ -21,6 +22,9 @@ const ListItems: React.FC<{
   href,
 }): React.ReactElement => {
   const [open, setOpen] = useState<boolean>(false);
+
+  const { direction } = useTheme();
+
   const handleClick = () => {
     setOpen(!open);
   };
@@ -41,8 +45,10 @@ const ListItems: React.FC<{
             {list?.length > 0 && openDrawer ? (
               open ? (
                 <ExpandMore fontSize="small" />
-              ) : (
+              ) : direction === "ltr" ? (
                 <ChevronRightIcon fontSize="small" />
+              ) : (
+                <ChevronLeftIcon fontSize="small" />
               )
             ) : null}
           </>

@@ -12,6 +12,8 @@ import { CookiesProvider } from "react-cookie";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
+// python manage.py runserver 8001
+
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }

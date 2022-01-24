@@ -6,16 +6,21 @@ import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { FormikProps } from "formik";
 import { useState } from "react";
 
-export const TextFieldCustom: React.FC<
-  {
-    name: string;
-    label?: React.ReactNode;
-    formik?: FormikProps<any>;
-    type?: React.HTMLInputTypeAttribute;
-  } & TextFieldProps
-> = ({ name, label, formik, type = "text", ...rest }): React.ReactElement => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+export type TextFieldCustomProps = {
+  name: string;
+  label?: React.ReactNode;
+  formik?: FormikProps<any>;
+  type?: React.HTMLInputTypeAttribute;
+} & TextFieldProps;
 
+export const TextFieldCustom: React.FC<TextFieldCustomProps> = ({
+  name,
+  label,
+  formik,
+  type = "text",
+  ...rest
+}): React.ReactElement => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   return (
     <TextField
       id="outlined-basic"

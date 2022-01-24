@@ -2,8 +2,8 @@ import { nextDynamic } from "components";
 import { getLayout } from "layouts";
 
 const UserCreatePage = () => {
-  const MessageMarketing = nextDynamic("MessageMarketing/UserCreate");
-  return <MessageMarketing />;
+  const UserCreate = nextDynamic("Table/UserCreate");
+  return <UserCreate />;
 };
 
 UserCreatePage.getLayout = getLayout;

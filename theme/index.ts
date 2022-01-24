@@ -7,15 +7,15 @@ type SupportedLocales = keyof typeof locales;
 
 const locale = locales.enUS;
 
-const customTheme = (palette: PaletteOptions, dir: "rtl" | "ltr") =>
-  createTheme({
+const customTheme = (palette: PaletteOptions, dir: "rtl" | "ltr") => {
+  console.log(dir);
+  return createTheme({
     direction: dir,
     typography: {
       fontFamily:
         dir === "rtl"
           ? fontType
           : "system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji",
-
       h1: {
         fontSize: "2.5rem",
       },
@@ -45,12 +45,23 @@ const customTheme = (palette: PaletteOptions, dir: "rtl" | "ltr") =>
             color: "#707070",
             backgroundColor: "#fff",
           },
+          input: {
+            direction: dir === "rtl" ? "ltr" : "ltr",
+          },
+        },
+      },
+      MuiFormControl: {
+        styleOverrides: {
+          root: {
+            direction: dir === "rtl" ? "ltr" : "ltr",
+          },
         },
       },
       MuiPaper: {
         styleOverrides: {
           root: {
             color: "#333",
+            direction: dir === "rtl" ? "ltr" : "ltr",
           },
         },
       },
@@ -95,5 +106,6 @@ const customTheme = (palette: PaletteOptions, dir: "rtl" | "ltr") =>
     },
     palette,
   });
+};
 
 export default customTheme;
