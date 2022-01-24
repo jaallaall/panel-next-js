@@ -28,23 +28,21 @@ yarn dev
 
 ## Technologies used
 
-### Next.js with Typescript & hooks
+#### Next.js with Typescript & hooks
 
-### Material UI5
+#### Material UI5
 
-### React-query & Axios
+#### React-query & Axios
 
-### React-table & Dialog MUI
+#### React-table & Dialog MUI
 
-### Context
+#### Context
 
-### Implement forms with Formik & yup
+#### Implement forms with Formik & yup
 
-### Eslint & Prettier & Docker
+#### Eslint & Prettier & Docker
 
-### swiper
-
-###
+#### Swiper
 
 ## Notes
 
