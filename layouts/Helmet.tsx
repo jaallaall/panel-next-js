@@ -1,12 +1,14 @@
-import { menuUs } from "i18n";
+import { useTranslation } from "next-i18next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { Dic } from "interfaces";
 
 const Helmet: React.FC<{ title?: string }> = ({
   title,
   children,
 }): React.ReactElement => {
   const { pathname } = useRouter();
+  const { t } = useTranslation("common");
 
   function capitalizeFirstLetter(string: string) {
     const words = string.split(" ");
@@ -17,12 +19,16 @@ const Helmet: React.FC<{ title?: string }> = ({
       .join("");
   }
 
+  // const tit =
+  //   pathname === "/"
+  //     ? t(Dic.dashboard)
+  //     : (menuUs as any)[
+  //         capitalizeFirstLetter(pathname?.split("/")[1].split("-").join(" "))
+  //       ];
   const tit =
     pathname === "/"
-      ? menuUs.Doshboard
-      : (menuUs as any)[
-          capitalizeFirstLetter(pathname?.split("/")[1].split("-").join(" "))
-        ];
+      ? t(Dic.dashboard)
+      : t(capitalizeFirstLetter(pathname?.split("/")[1].split("-").join(" ")));
 
   const res = tit ? "panel" + " | " + tit : "panel";
   return (

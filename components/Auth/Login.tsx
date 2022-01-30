@@ -4,15 +4,17 @@ import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
-import { mainUs } from "i18n";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useLoginUser } from "services";
 import { validationSchemaLogin } from "utils/validationSchema";
+import { useTranslation } from "next-i18next";
+import { Dic } from "interfaces";
 
 const Login: React.FC = (): React.ReactElement => {
   const { push } = useRouter();
+  const { t } = useTranslation("common");
   const [cookie, setCookie] = useCookies(["token"]);
   const { mutate, isLoading } = useLoginUser();
 
@@ -55,7 +57,7 @@ const Login: React.FC = (): React.ReactElement => {
     >
       {message && <Alert severity="error">{message}</Alert>}
       <Typography variant="h5">Login</Typography>
-      <TextField name="username" formik={formik} label={mainUs.username} />
+      <TextField name="username" formik={formik} label={t(Dic.username)} />
       <TextField
         name="password"
         type="password"

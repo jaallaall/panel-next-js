@@ -4,6 +4,7 @@ import List from "@mui/material/List";
 import { styled } from "@mui/material/styles";
 import ListItems from "./ListItems";
 import { menu } from "./menu";
+import { useTranslation } from "next-i18next";
 
 const drawerWidth: number = 240;
 
@@ -37,9 +38,9 @@ const Drawer = styled(MuiDrawer, {
 const Dashboard: React.FC<{
   open?: boolean;
   hover?: boolean;
-  top?: number;
   setSidebar: (e: any) => void;
-}> = ({ open, top, setSidebar, hover }): React.ReactElement => {
+}> = ({ open, setSidebar, hover }): React.ReactElement => {
+  const { t } = useTranslation("common");
   return (
     <Stack
       sx={{
@@ -82,7 +83,7 @@ const Dashboard: React.FC<{
         }}
       >
         <List component="nav" aria-labelledby="nested-list-subheader">
-          {menu.map((item, i) => {
+          {menu(t).map((item, i) => {
             return (
               <ListItems
                 key={i}

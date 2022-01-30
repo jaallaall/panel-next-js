@@ -9,8 +9,8 @@ import {
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { useModal } from "hooks";
-import { mainUs } from "i18n";
-import { Options } from "interfaces";
+import { Options, Dic } from "interfaces";
+import { useTranslation } from "next-i18next";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "react-query";
 import { TableInstance } from "react-table";
@@ -19,6 +19,7 @@ import UserCreate from "./UserCreate";
 
 const UserAll: React.FC = (): React.ReactElement => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
   const { data: dataUserAll } = useUserAll();
   const { mutate } = useUserDelete();
   const [createUser, setCreateUser] = useState<boolean>(false);
@@ -32,16 +33,16 @@ const UserAll: React.FC = (): React.ReactElement => {
   const columns = useMemo(
     () => [
       {
-        Header: mainUs.message,
+        Header: t(Dic.message),
         accessor: "message",
       },
       {
-        Header: mainUs.message_count,
+        Header: t(Dic.message_count),
         accessor: "message_count",
         Filter: DatePickerFilter,
       },
       {
-        Header: mainUs.admin_accept,
+        Header: t(Dic.admin_accept),
         accessor: "admin_accept",
         Cell: ({ row: { original } }: { row: { original: Options } }) => {
           if (original.admin_accept) {
@@ -51,26 +52,26 @@ const UserAll: React.FC = (): React.ReactElement => {
         },
       },
       {
-        Header: mainUs.gender,
+        Header: t(Dic.gender),
         accessor: "gender",
         Cell: ({ row: { original } }: { row: { original: Options } }) => {
           return <>{original.query_param.gender}</>;
         },
       },
       {
-        Header: mainUs.city,
+        Header: t(Dic.city),
         accessor: "city",
         Cell: ({ row: { original } }: { row: { original: Options } }) => {
           return <>{original.query_param.city}</>;
         },
       },
       {
-        Header: mainUs.number,
+        Header: t(Dic.number),
         accessor: "number",
         Filter: SliderColumnFilter,
       },
       {
-        Header: mainUs.total_cost,
+        Header: t(Dic.total_cost),
         accessor: "total_cost",
       },
     ],

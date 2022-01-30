@@ -1,7 +1,7 @@
 import { PaletteMode } from "@mui/material";
 import { deepOrange, grey } from "@mui/material/colors";
 
-export const getDesignTokens = (mode: PaletteMode) => {
+export const getDesignTokens = (mode?: PaletteMode) => {
   return {
     mode,
     ...(mode !== "dark"

@@ -11,6 +11,7 @@ import { useEffect, useRef } from "react";
 import { CookiesProvider } from "react-cookie";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { appWithTranslation } from "next-i18next";
 
 // python manage.py runserver 8001
 
@@ -26,7 +27,7 @@ type Props = MyAppProps & {
   Component: Page;
 };
 
-export default function MyApp(props: Props) {
+function MyApp(props: Props) {
   const { Component, pageProps } = props;
   const getLayout = Component.getLayout || ((page: React.ReactNode) => page);
   const router = useRouter();
@@ -58,7 +59,7 @@ export default function MyApp(props: Props) {
   return (
     <ColorModeProvider>
       <Head>
-        <title>panel</title>
+        <title>{process.env.NEXT_APP_TITLE}</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <AuthProvider>
@@ -73,3 +74,5 @@ export default function MyApp(props: Props) {
     </ColorModeProvider>
   );
 }
+
+export default appWithTranslation(MyApp);

@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import { forwardRef } from "react";
 import AvatarList from "./Avatar";
 import Search from "./Search";
+import { useTranslation } from "next-i18next";
 
 const drawerWidth: number = 240;
 
@@ -42,7 +43,7 @@ function HeaderRef(
   ref?: React.ForwardedRef<HTMLDivElement>
 ): React.ReactElement {
   const { toggleDrawer, open, handleClickOpen } = props;
-
+  const { t } = useTranslation();
   const { direction } = useTheme();
 
   return (
@@ -107,7 +108,7 @@ function HeaderRef(
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          Dashboard
+          {t("dashboard")}
         </Typography>
         <Box sx={{ display: "flex" }}>
           <Search />

@@ -1,8 +1,8 @@
 import { Button, Gender, Select, TextField } from "@mui";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
-import { mainUs } from "i18n";
-import { Options } from "interfaces";
+import { Options, Dic } from "interfaces";
+import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { useQueryClient } from "react-query";
 import { useUserCreate, useUserUpdate } from "services";
@@ -31,6 +31,7 @@ const UserCreate: React.FC<{
   createUser?: boolean;
 }> = ({ toggle, toggleAdd, dataRow, createUser }): React.ReactElement => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation("common");
   const { pathname } = useRouter();
 
   const { mutate, isLoading } = useUserCreate();
@@ -90,25 +91,25 @@ const UserCreate: React.FC<{
       <TextField
         name="message"
         formik={formik}
-        label={mainUs.message}
+        label={t(Dic.message)}
         multiline
         rows={5}
       />
       <Select
         name="city"
         formik={formik}
-        label={mainUs.city}
+        label={t(Dic.city)}
         options={countries}
         titleBased="label"
       />
 
-      <Gender formik={formik} name={mainUs.gender} />
+      <Gender formik={formik} name={t(Dic.gender)} />
 
       <TextField
         type="number"
         name="number"
         formik={formik}
-        label={mainUs.number}
+        label={t(Dic.number)}
       />
       {pathname.endsWith("user-create") && (
         <Button type="submit" loading={isLoading}>

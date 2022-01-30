@@ -1,32 +1,32 @@
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import DisplaySettingsIcon from "@mui/icons-material/DisplaySettings";
 import MessageIcon from "@mui/icons-material/Message";
-import { main } from "i18n";
+import { TFunction } from "next-i18next";
 
-export const menu = [
+export const menu = (t: TFunction) => [
   {
-    name: main.dashboard,
+    name: t("dashboard"),
     icon: <DisplaySettingsIcon sx={{ mr: 1 }} />,
-    href: "/",
+    href: "",
     subMenu: [],
   },
   {
-    name: main.table,
+    name: t("table"),
     icon: <MessageIcon sx={{ mr: 1 }} />,
     href: "table",
     subMenu: [
-      { name: "ساخت کاربر", href: "user-create" },
-      { name: "همه کاربران", href: "user-all" },
+      { name: t("userCreate"), href: "user-create" },
+      { name: t("userAll"), href: "user-all" },
     ],
   },
   {
-    name: main.forms,
+    name: t("forms"),
     icon: <MessageIcon sx={{ mr: 1 }} />,
     href: "forms",
     subMenu: [],
   },
   {
-    name: main.swiper,
+    name: t("swiper"),
     icon: <AccountBoxIcon sx={{ mr: 1 }} />,
     href: "slider",
     subMenu: [],

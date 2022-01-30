@@ -2,12 +2,14 @@ import { Button, FileUpload, Input } from "@mui";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import { useUploadFile } from "hooks";
-import { Options } from "interfaces";
+import { Dic, Options } from "interfaces";
+import { useTranslation } from "next-i18next";
 import { useRef, useState } from "react";
 import { countries, top100Films, validationSchemaTest } from "utils";
 import { GridForm } from "./GridForm";
 
 const Forms: React.FC = (): React.ReactElement => {
+  const { t } = useTranslation("common");
   const [data, setData] = useState<Options[]>([]);
   const myRef: any = useRef(null);
 
@@ -55,14 +57,14 @@ const Forms: React.FC = (): React.ReactElement => {
           borderRadius: 2,
         }}
       >
-        <Input name="name" formik={formik} label="name" />
+        <Input name="name" formik={formik} label={t(Dic.name)} />
         <Input
           mode="autocomplete"
           options={countries}
           titleBased="label"
           formik={formik}
           name="countries"
-          label="countries"
+          label={t(Dic.countries)}
           render={({ label }) => <span>{label}</span>}
         />
         <Input
@@ -72,12 +74,12 @@ const Forms: React.FC = (): React.ReactElement => {
           formik={formik}
           multiple
           name="countries1"
-          label="countries"
+          label={t(Dic.countries)}
           render={({ label }) => <span>{label}</span>}
         />
         <Input
           mode="select"
-          name="film"
+          name={t(Dic.film)}
           options={top100Films}
           titleBased="label"
           formik={formik}
@@ -87,13 +89,13 @@ const Forms: React.FC = (): React.ReactElement => {
           mode="datePicker"
           name="birthDate"
           formik={formik}
-          label="birthDate"
+          label={t(Dic.birthDate)}
         />
         <FileUpload
           fileSelected={fileSelected}
           handleImageChange={handleImageChange}
           label="upload image"
-          name="file"
+          name={t(Dic.file)}
           formik={formik}
         />
         <Button type="submit">submit</Button>

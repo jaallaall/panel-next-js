@@ -2,6 +2,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { alpha, styled } from "@mui/material/styles";
 import { useDebounce } from "hooks";
+import { useTranslation } from "next-i18next";
 import { useEffect, useState } from "react";
 
 const SearchStyled = styled("div")(({ theme }) => ({
@@ -46,6 +47,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Search: React.FC = (): React.ReactElement => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [results, setResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -69,7 +71,7 @@ const Search: React.FC = (): React.ReactElement => {
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
-        placeholder="Search…"
+        placeholder={t("search")}
         inputProps={{ "aria-label": "search" }}
         onChange={(e) => setSearchTerm(e.target.value)}
       />

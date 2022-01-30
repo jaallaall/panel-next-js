@@ -30,7 +30,7 @@ const AvatarList: React.FC = (): React.ReactElement => {
 
   const handleClickLogout = () => {
     removeCookie("token");
-    mutate(null);
+    mutate();
     push("/login");
   };
   const user = "jalal";

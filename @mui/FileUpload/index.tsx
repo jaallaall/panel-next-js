@@ -21,7 +21,6 @@ export const FileUpload: React.FC<{
   formik,
 }): React.ReactElement => {
   const ref: any = useRef(null);
-  console.log(formik);
   return (
     <Box position="relative">
       <Box>

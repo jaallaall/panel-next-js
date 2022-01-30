@@ -2,17 +2,18 @@ import Typography from "@mui/material/Typography";
 import Breadcrumbs, { BreadcrumbsProps } from "@mui/material/Breadcrumbs";
 import { useRouter } from "next/router";
 import { SxPropes } from "interfaces";
-import { main, menuUs } from "i18n";
 import { NextLink } from "../Link";
+import { TFunction, useTranslation } from "next-i18next";
 
 export const BreadcrumbsCustom: React.FC<
   {
     home: string;
     sx?: SxPropes;
-    menu?: { [key: string]: any }[];
+    menu: (e: TFunction) => { [key: string]: any }[];
   } & BreadcrumbsProps
 > = ({ home, sx, menu, ...rest }): React.ReactElement | null => {
   const { pathname } = useRouter();
+  const { t } = useTranslation("menu");
 
   function capitalizeFirstLetter(string: string) {
     const words = string.split("-");
@@ -48,11 +49,11 @@ export const BreadcrumbsCustom: React.FC<
       {final?.map((item, i) => {
         if (
           i === final.length - 1 ||
-          menu?.some((it) => it.href === item && it.subMenu.length > 0)
+          menu(t)?.some((it) => it.href === item && it.subMenu.length > 0)
         ) {
           return (
             <Typography key={i} sx={{ fontSize: "inherit" }}>
-              {(main as any)[capitalizeFirstLetter(item)]}
+              {t(capitalizeFirstLetter(item))}
             </Typography>
           );
         }
@@ -62,7 +63,8 @@ export const BreadcrumbsCustom: React.FC<
             href={item === home ? "/" : `/${item}`}
             key={i}
           >
-            {(main as any)[capitalizeFirstLetter(item)]}
+            {/* {(menu(t) as any)[capitalizeFirstLetter(item)]} */}
+            {t(capitalizeFirstLetter(item))}
           </NextLink>
         );
       })}

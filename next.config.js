@@ -5,9 +5,10 @@
 //   enabled: process.env.ANALYZE === "true",
 // });
 
+const { i18n } = require("./next-i18next.config");
+
 module.exports = {
   reactStrictMode: true,
-  env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-  },
+  trailingSlash: true,
+  i18n,
 };

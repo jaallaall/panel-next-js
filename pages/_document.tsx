@@ -2,6 +2,7 @@ import createEmotionServer from "@emotion/server/create-instance";
 import { createEmotionCache } from "@mui/CacheProvider";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import { Children } from "react";
+import customTheme from "theme";
 
 export default class MyDocument extends Document {
   render() {
@@ -11,7 +12,7 @@ export default class MyDocument extends Document {
           {/* PWA primary color */}
           <meta
             name="theme-color"
-            // content={palette.primary.main}
+            content={customTheme().palette.primary.main}
           />
           <link
             rel="stylesheet"

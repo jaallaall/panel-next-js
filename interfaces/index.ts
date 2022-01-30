@@ -1,32 +1,21 @@
-import { menu } from "i18n";
 import { SxProps } from "@mui/system";
 import { Theme } from "@mui/material";
+import dic from "public/locales/en/common.json";
 
-export type Routes = { [key in keyof typeof menu]?: any };
-
-export type Pages = keyof typeof menu;
-
-export enum Api {
-  Mission = "Mission",
-}
-
-export enum ApiKeys {
-  Mission = "Mission",
-  MissionId = "MissionId",
-}
-
-export type Endpoint = keyof typeof Api;
-export type EndpointKey = keyof typeof ApiKeys;
-
-// const keysApi = Object.keys(Api).reduce(
-//     (acc, cur) => ({ ...(acc as any), [cur]: cur }),
-//     {} as const
-// )
-
-// export type ApiKey = keyof typeof keysApi
-
-// export const getKeys = <A extends Api>(obj: A) =>
-//     Object.keys(obj) as (keyof A)[]
+export const Dic = (() =>
+  ({
+    ...Object.keys(dic)
+      .filter((k) => isNaN(Number(k)))
+      .reduce(
+        (acc, cur) => ({
+          ...acc,
+          [cur]: cur,
+        }),
+        {}
+      ),
+  } as {
+    [k in keyof typeof dic]: k;
+  }))();
 
 export type SxPropes = SxProps<Theme>;
 export interface SxObject {
@@ -41,7 +30,29 @@ export interface MyValues {
   [key: string]: string | null | { name: string };
 }
 
-export enum ROUTESURL {
-  signin = "signin",
-  home = "/",
-}
+// export enum Dic {
+//   table = "table",
+//   forms = "forms",
+//   messageMarketing = "messageMarketing",
+//   userCreate = "userCreate",
+//   userAll = "userAll",
+//   swiper = "swiper",
+//   dashboard = "dashboard",
+//   type = "type",
+//   email = "email",
+//   phoneNumber = "phoneNumber",
+//   city = "city",
+//   username = "username",
+//   password = "password",
+//   message = "message",
+//   gender = "gender",
+//   number = "number",
+//   description = "description",
+//   message_count = "message_count",
+//   admin_accept = "admin_accept",
+//   male = "male",
+//   female = "female",
+//   total_cost = "total_cost",
+//   search = "search",
+//   other = "other",
+// }

@@ -5,15 +5,17 @@ import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import { useAuth } from "hooks";
-import { mainUs } from "i18n";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useRegister } from "services/auth";
 import { validationSchema } from "utils/validationSchema";
+import { useTranslation } from "next-i18next";
+import { Dic } from "interfaces";
 
 const Register: React.FC = (): React.ReactElement => {
   const { push } = useRouter();
+  const { t } = useTranslation("common");
   const { state, dispatch } = useAuth();
   const [cookie, setCookie] = useCookies(["token"]);
   const { mutate, isLoading } = useRegister();
@@ -64,24 +66,24 @@ const Register: React.FC = (): React.ReactElement => {
       {message && <Alert severity="error">{message}</Alert>}
       <Typography variant="h5">register</Typography>
 
-      <TextField name="username" formik={formik} label={mainUs.username} />
+      <TextField name="username" formik={formik} label={t(Dic.username)} />
       <TextField
         name="password"
         type="password"
         formik={formik}
-        label={mainUs.password}
+        label={t(Dic.password)}
       />
       <TextField
         name="email"
         type="email"
         formik={formik}
-        label={mainUs.email}
+        label={t(Dic.email)}
       />
       <TextField
         type="tel"
         name="phoneNumber"
         formik={formik}
-        label={mainUs.phoneNumber}
+        label={t(Dic.phoneNumber)}
       />
 
       <Button type="submit" loading={isLoading}>

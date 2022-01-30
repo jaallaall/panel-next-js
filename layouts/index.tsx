@@ -3,16 +3,18 @@ import Stack from "@mui/material/Stack";
 import Dashboard from "components/Dashboard";
 import { menu } from "components/Dashboard/menu";
 import { Header } from "components/Header";
-import { menuUs } from "i18n";
+import { Dic } from "interfaces";
 import type { NextPage } from "next";
+import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCookies } from "react-cookie";
 import Helmet from "./Helmet";
 import Settings from "./Settings";
 
 const Layout: React.FC = ({ children }): React.ReactElement => {
   const [cookie] = useCookies(["token"]);
+  const { t } = useTranslation();
   const { push, pathname } = useRouter();
   const [sidebar, setSidebar] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
@@ -23,9 +25,9 @@ const Layout: React.FC = ({ children }): React.ReactElement => {
     setHover(!hover);
   };
 
-  useEffect(() => {
-    if (!Boolean(cookie.token)) push("/login");
-  }, []);
+  // useEffect(() => {
+  //   if (!Boolean(cookie.token)) push("/login");
+  // }, []);
 
   return (
     <Helmet>
@@ -53,7 +55,7 @@ const Layout: React.FC = ({ children }): React.ReactElement => {
         }}
       >
         <Breadcrumbs
-          home={menuUs.Doshboard}
+          home={t(Dic.dashboard)}
           menu={menu}
           sx={{ color: "primary.100" }}
         />
