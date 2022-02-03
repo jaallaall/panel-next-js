@@ -2,9 +2,9 @@ import { Paper, Stack } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import { styled } from "@mui/material/styles";
+import { useTranslate } from "hooks";
 import ListItems from "./ListItems";
 import { menu } from "./menu";
-import { useTranslation } from "next-i18next";
 
 const drawerWidth: number = 240;
 
@@ -40,7 +40,7 @@ const Dashboard: React.FC<{
   hover?: boolean;
   setSidebar: (e: any) => void;
 }> = ({ open, setSidebar, hover }): React.ReactElement => {
-  const { t } = useTranslation("common");
+  const { t } = useTranslate();
   return (
     <Stack
       sx={{

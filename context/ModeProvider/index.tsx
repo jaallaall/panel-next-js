@@ -1,6 +1,6 @@
 import CacheProviderRtl from "@mui/CacheProvider";
 import { ThemeProvider } from "@mui/material/styles";
-import { i18n } from "next-i18next";
+// import { i18n } from "next-i18next";
 import { createContext, useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import customTheme from "theme";
@@ -57,7 +57,7 @@ export const ColorModeProvider: React.FC = ({
   const directionMode = useMemo(
     () => ({
       toggleDirectionMode: () => {
-        if (i18n) i18n.changeLanguage(i18n.language === "en" ? "fa" : "en");
+        // if (i18n) i18n.changeLanguage(i18n.language === "en" ? "fa" : "en");
         setDir((prevMode) => (prevMode === "ltr" ? "rtl" : "ltr"));
       },
       dir,

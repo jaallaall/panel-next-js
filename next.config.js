@@ -9,6 +9,9 @@ const { i18n } = require("./next-i18next.config");
 
 module.exports = {
   reactStrictMode: true,
-  trailingSlash: true,
+  // trailingSlash: true,
   i18n,
+  images: {
+    domains: ["https://flagcdn.com/w20/"],
+  },
 };

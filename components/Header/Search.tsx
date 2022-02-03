@@ -1,8 +1,7 @@
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { alpha, styled } from "@mui/material/styles";
-import { useDebounce } from "hooks";
-import { useTranslation } from "next-i18next";
+import { useDebounce, useTranslate } from "hooks";
 import { useEffect, useState } from "react";
 
 const SearchStyled = styled("div")(({ theme }) => ({
@@ -47,7 +46,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Search: React.FC = (): React.ReactElement => {
-  const { t } = useTranslation();
+  const { t } = useTranslate();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [results, setResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);

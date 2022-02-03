@@ -16,3 +16,4 @@ export * from "./Table";
 export * from "./Table/DatePicker";
 export * from "./Table/SliderColumnFilter";
 export { GridCustom as Grid, GridItem } from "./Grid";
+export * from "./CacheProvider/makeStyles";

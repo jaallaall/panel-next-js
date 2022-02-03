@@ -1,15 +1,24 @@
-import { Button, FileUpload, Input } from "@mui";
+import { Button, FileUpload, Input, makeStyles } from "@mui";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
-import { useUploadFile } from "hooks";
-import { Dic, Options } from "interfaces";
-import { useTranslation } from "next-i18next";
+import { useUploadFile, useTranslate } from "hooks";
+import { Options } from "interfaces";
 import { useRef, useState } from "react";
 import { countries, top100Films, validationSchemaTest } from "utils";
 import { GridForm } from "./GridForm";
 
+const styles = makeStyles({
+  bgcolor: "grey",
+  p: 2,
+  border: "1px solid #ddd",
+  maxWidth: 600,
+  mx: "auto",
+  width: "100%",
+  borderRadius: 2,
+});
+
 const Forms: React.FC = (): React.ReactElement => {
-  const { t } = useTranslation("common");
+  const { t } = useTranslate();
   const [data, setData] = useState<Options[]>([]);
   const myRef: any = useRef(null);
 
@@ -47,24 +56,16 @@ const Forms: React.FC = (): React.ReactElement => {
         component="form"
         onSubmit={formik.handleSubmit}
         spacing={2}
-        sx={{
-          bgcolor: "grey",
-          p: 2,
-          border: "1px solid #ddd",
-          maxWidth: 600,
-          mx: "auto",
-          width: "100%",
-          borderRadius: 2,
-        }}
+        sx={styles}
       >
-        <Input name="name" formik={formik} label={t(Dic.name)} />
+        <Input name="name" formik={formik} label={t("name")} />
         <Input
           mode="autocomplete"
           options={countries}
           titleBased="label"
           formik={formik}
           name="countries"
-          label={t(Dic.countries)}
+          label={t("countries")}
           render={({ label }) => <span>{label}</span>}
         />
         <Input
@@ -74,12 +75,12 @@ const Forms: React.FC = (): React.ReactElement => {
           formik={formik}
           multiple
           name="countries1"
-          label={t(Dic.countries)}
+          label={t("countries")}
           render={({ label }) => <span>{label}</span>}
         />
         <Input
           mode="select"
-          name={t(Dic.film)}
+          name={t("film")}
           options={top100Films}
           titleBased="label"
           formik={formik}
@@ -89,13 +90,13 @@ const Forms: React.FC = (): React.ReactElement => {
           mode="datePicker"
           name="birthDate"
           formik={formik}
-          label={t(Dic.birthDate)}
+          label={t("birthDate")}
         />
         <FileUpload
           fileSelected={fileSelected}
           handleImageChange={handleImageChange}
           label="upload image"
-          name={t(Dic.file)}
+          name={t("file")}
           formik={formik}
         />
         <Button type="submit">submit</Button>

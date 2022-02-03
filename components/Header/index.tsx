@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -7,14 +6,15 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { useTheme } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Badge from "@mui/material/Badge";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { useTranslate } from "hooks";
 import { forwardRef } from "react";
 import AvatarList from "./Avatar";
 import Search from "./Search";
-import { useTranslation } from "next-i18next";
 
 const drawerWidth: number = 240;
 
@@ -43,7 +43,7 @@ function HeaderRef(
   ref?: React.ForwardedRef<HTMLDivElement>
 ): React.ReactElement {
   const { toggleDrawer, open, handleClickOpen } = props;
-  const { t } = useTranslation();
+  const { t } = useTranslate();
   const { direction } = useTheme();
 
   return (

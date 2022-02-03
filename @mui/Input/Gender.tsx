@@ -4,8 +4,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import { FormikProps } from "formik";
-import { useTranslation } from "next-i18next";
-import { Dic } from "interfaces";
+import { useTranslate } from "hooks";
 
 export interface GenderProps {
   name: string;
@@ -16,7 +15,7 @@ export const Gender: React.FC<GenderProps> = ({
   name,
   formik,
 }): React.ReactElement => {
-  const { t } = useTranslation();
+  const { t } = useTranslate();
   return (
     <>
       <FormControl
@@ -37,17 +36,17 @@ export const Gender: React.FC<GenderProps> = ({
           <FormControlLabel
             value="male"
             control={<Radio />}
-            label={t(Dic.male) as string}
+            label={t("male") as string}
           />
           <FormControlLabel
             value="female"
             control={<Radio />}
-            label={t(Dic.female) as string}
+            label={t("female") as string}
           />
           <FormControlLabel
             value="other"
             control={<Radio />}
-            label={t(Dic.other) as string}
+            label={t("other") as string}
           />
         </RadioGroup>
       </FormControl>

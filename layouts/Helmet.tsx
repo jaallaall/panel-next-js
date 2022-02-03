@@ -1,14 +1,13 @@
-import { useTranslation } from "next-i18next";
+import { TranslationKeysAll, useTranslate } from "hooks";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Dic } from "interfaces";
 
 const Helmet: React.FC<{ title?: string }> = ({
   title,
   children,
 }): React.ReactElement => {
   const { pathname } = useRouter();
-  const { t } = useTranslation("common");
+  const { t } = useTranslate();
 
   function capitalizeFirstLetter(string: string) {
     const words = string.split(" ");
@@ -27,8 +26,12 @@ const Helmet: React.FC<{ title?: string }> = ({
   //       ];
   const tit =
     pathname === "/"
-      ? t(Dic.dashboard)
-      : t(capitalizeFirstLetter(pathname?.split("/")[1].split("-").join(" ")));
+      ? t("dashboard")
+      : t(
+          capitalizeFirstLetter(
+            pathname?.split("/")[1].split("-").join(" ")
+          ) as TranslationKeysAll
+        );
 
   const res = tit ? "panel" + " | " + tit : "panel";
   return (

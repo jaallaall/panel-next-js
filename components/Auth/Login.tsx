@@ -10,11 +10,11 @@ import { useCookies } from "react-cookie";
 import { useLoginUser } from "services";
 import { validationSchemaLogin } from "utils/validationSchema";
 import { useTranslation } from "next-i18next";
-import { Dic } from "interfaces";
+import { useTranslate } from "hooks";
 
 const Login: React.FC = (): React.ReactElement => {
   const { push } = useRouter();
-  const { t } = useTranslation("common");
+  const { t } = useTranslate();
   const [cookie, setCookie] = useCookies(["token"]);
   const { mutate, isLoading } = useLoginUser();
 
@@ -62,7 +62,7 @@ const Login: React.FC = (): React.ReactElement => {
         name="password"
         type="password"
         formik={formik}
-        label={mainUs.password}
+        label={t("password")}
       />
 
       <Button type="submit" loading={isLoading}>

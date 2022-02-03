@@ -2,6 +2,7 @@ import { EmotionCache } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AuthProvider, ColorModeProvider } from "context";
 import { NextPage } from "next";
+import { appWithTranslation } from "next-i18next";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -11,7 +12,6 @@ import { useEffect, useRef } from "react";
 import { CookiesProvider } from "react-cookie";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { appWithTranslation } from "next-i18next";
 
 // python manage.py runserver 8001
 

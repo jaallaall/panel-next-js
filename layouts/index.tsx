@@ -3,9 +3,8 @@ import Stack from "@mui/material/Stack";
 import Dashboard from "components/Dashboard";
 import { menu } from "components/Dashboard/menu";
 import { Header } from "components/Header";
-import { Dic } from "interfaces";
 import type { NextPage } from "next";
-import { useTranslation } from "next-i18next";
+import { useTranslate } from "hooks";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
@@ -14,7 +13,7 @@ import Settings from "./Settings";
 
 const Layout: React.FC = ({ children }): React.ReactElement => {
   const [cookie] = useCookies(["token"]);
-  const { t } = useTranslation();
+  const { t } = useTranslate();
   const { push, pathname } = useRouter();
   const [sidebar, setSidebar] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
@@ -55,7 +54,7 @@ const Layout: React.FC = ({ children }): React.ReactElement => {
         }}
       >
         <Breadcrumbs
-          home={t(Dic.dashboard)}
+          home={t("dashboard")}
           menu={menu}
           sx={{ color: "primary.100" }}
         />
