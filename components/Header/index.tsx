@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import { useTranslate } from "hooks";
 import { forwardRef } from "react";
 import AvatarList from "./Avatar";
+import Language from "./Language";
 import Search from "./Search";
 
 const drawerWidth: number = 240;
@@ -110,7 +111,7 @@ function HeaderRef(
         >
           {t("dashboard")}
         </Typography>
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <Search />
           <IconButton color="inherit">
             <Badge
@@ -128,6 +129,7 @@ function HeaderRef(
           <IconButton onClick={handleClickOpen} color="inherit">
             <SettingsIcon />
           </IconButton>
+          <Language />
           <AvatarList />
         </Box>
       </Toolbar>

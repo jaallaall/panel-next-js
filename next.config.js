@@ -11,7 +11,8 @@ module.exports = {
   reactStrictMode: true,
   // trailingSlash: true,
   i18n,
-  images: {
-    domains: ["https://flagcdn.com/w20/"],
-  },
+  // images: {
+  //   domains: ["https://flagcdn.com/w20"],
+  //   // formats: ["image/webp", "image/png"],
+  // },
 };

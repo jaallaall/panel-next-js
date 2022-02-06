@@ -1,16 +1,15 @@
 import { Button, Link, TextField } from "@mui";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
+import { useTranslate } from "hooks";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useLoginUser } from "services";
 import { validationSchemaLogin } from "utils/validationSchema";
-import { useTranslation } from "next-i18next";
-import { useTranslate } from "hooks";
 
 const Login: React.FC = (): React.ReactElement => {
   const { push } = useRouter();
@@ -57,7 +56,7 @@ const Login: React.FC = (): React.ReactElement => {
     >
       {message && <Alert severity="error">{message}</Alert>}
       <Typography variant="h5">Login</Typography>
-      <TextField name="username" formik={formik} label={t(Dic.username)} />
+      <TextField name="username" formik={formik} label={t("username")} />
       <TextField
         name="password"
         type="password"

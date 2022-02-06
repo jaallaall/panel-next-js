@@ -9,6 +9,8 @@ export type SelectProps = {
   titleBased: string;
   formik?: FormikProps<any>;
   name: string;
+  handleChange?: (e: any) => any;
+  value?: unknown;
 } & TextFieldProps;
 
 export const SelectCustom: React.FC<SelectProps> = ({
@@ -18,6 +20,8 @@ export const SelectCustom: React.FC<SelectProps> = ({
   titleBased,
   formik,
   name,
+  handleChange,
+  value,
   ...rest
 }): React.ReactElement => {
   // const [age, setAge] = useState('');
@@ -29,8 +33,8 @@ export const SelectCustom: React.FC<SelectProps> = ({
     <TextField
       name={name}
       id={id}
-      value={formik?.values[name]}
-      onChange={formik?.handleChange}
+      value={formik ? formik.values[name] : value}
+      onChange={formik ? formik.handleChange : handleChange}
       label={label}
       select
       error={formik?.touched[name] && Boolean(formik?.errors[name])}

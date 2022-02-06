@@ -1,19 +1,15 @@
-import Box from "@mui/material/Box";
 import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useColorMode, useDirMode } from "hooks";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import { Link } from "@mui";
 
 const Settings: React.FC<{
   open: boolean;
   handleClickClose: (e?: any) => void;
 }> = ({ open, handleClickClose }): React.ReactElement => {
-  const { locales, pathname, query, asPath } = useRouter();
   const { toggleColorMode } = useColorMode();
   const { toggleDirectionMode } = useDirMode();
 
@@ -44,34 +40,18 @@ const Settings: React.FC<{
           <Button
             color="primary"
             onClick={toggleColorMode}
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", justifyContent: "flex-start" }}
           >
             <FormatColorFillIcon sx={{ mr: 2 }} />
             change color
           </Button>
-          {locales?.map((loc) => {
-            return (
-              <Link
-                color="primary"
-                onClick={toggleDirectionMode}
-                sx={{ mt: 4, display: "inline-flex", p: 2 }}
-                key={loc}
-                href={{ pathname, query }}
-                as={asPath}
-                locale={loc}
-              >
-                {/* <Image
-                  src={`${
-                    loc === "en" ? "EN".toLowerCase() : "IR".toLowerCase()
-                  }.png`}
-                  width={20}
-                  height={20}
-                  alt=""
-                /> */}
-                {loc}
-              </Link>
-            );
-          })}
+          <Button
+            color="primary"
+            onClick={toggleDirectionMode}
+            sx={{ width: "100%", mt: 2, justifyContent: "flex-start" }}
+          >
+            change direction
+          </Button>
         </Box>
       </Stack>
       {open && (
